@@ -55,21 +55,21 @@ public class SercurityConfig {
             }).toArray(String[]::new);
             http
                     .authorizeHttpRequests()
-                    .antMatchers(arrayRouter).hasRole(role.getRoleName())
-                    .and()
-                    .formLogin((form) -> form
-                    .loginPage("/admin/login")
-                    .permitAll().failureUrl("/admin/login-error")
-                    .defaultSuccessUrl("/default",true).usernameParameter("email")
-                    .passwordParameter("password")
-            ).authenticationProvider(authenticationProvider())
-                    .logout((logout) -> logout.permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/admin/logout"))
-                            .logoutSuccessUrl("/admin/login")
-                            .invalidateHttpSession(true)
-                            .deleteCookies("JSESSIONID"))
-                    .csrf()
-                    .disable().headers().frameOptions().disable();
+                    .antMatchers(arrayRouter).hasRole(role.getRoleName());
         }
+        http
+                .formLogin((form) -> form
+                        .loginPage("/admin/login")
+                        .permitAll().failureUrl("/admin/login-error")
+                        .defaultSuccessUrl("/default",true).usernameParameter("email")
+                        .passwordParameter("password")
+                ).authenticationProvider(authenticationProvider())
+                .logout((logout) -> logout.permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/admin/logout"))
+                        .logoutSuccessUrl("/admin/login")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID"))
+                .csrf()
+                .disable().headers().frameOptions().disable();
         return http.build();
     }
     @Bean
