@@ -23,6 +23,7 @@ public class User extends EntityBase implements Serializable {
     private String password;
     @Column(name = "full_name")
     private String fullName;
+    @Column
     private String address;
     private String phone;
     @Column(name = "user_type")
