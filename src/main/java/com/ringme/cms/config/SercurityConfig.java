@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -42,30 +43,35 @@ public class SercurityConfig {
         return authProvider;
     }
     @Bean
+    public static PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         List<Role> routerRoles = roleService.findAllRole();
+        http.authorizeRequests().antMatchers("/login").permitAll();
         for (Role role :routerRoles){
             List<RouterRole> routerRoles1 = roleRouterService.findAllRouterRoleByRoleId(role.getId());
             String[] arrayRouter = routerRoles1.stream().map((e) -> {
                 return e.getRouter().getRouter_link();
             }).toArray(String[]::new);
             http
-                    .authorizeHttpRequests()
+                    .authorizeRequests()
                     .antMatchers(arrayRouter).hasRole(role.getRoleName());
         }
-        http
+        http.authorizeRequests().and()
                 .formLogin((form) -> form
-                        .loginPage("/admin/login")
-                        .permitAll().failureUrl("/admin/login-error")
-                        .defaultSuccessUrl("/default",true).usernameParameter("email")
+                        .loginPage("/login")
+                        .permitAll().failureUrl("/login")
+                        .defaultSuccessUrl("/default",true).usernameParameter("username")
                         .passwordParameter("password")
                 ).authenticationProvider(authenticationProvider())
                 .logout((logout) -> logout.permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/admin/logout"))
-                        .logoutSuccessUrl("/admin/login")
+                        .logoutSuccessUrl("/index")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"))
                 .csrf()

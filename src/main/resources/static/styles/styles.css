@@ -1,0 +1,118 @@
+
+/* Begin login */
+
+.form_login{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    min-height: max-content;
+}
+.title_login{
+    display: flex;
+    flex-direction: column;
+    padding: 30px 0;
+    justify-content: space-between;
+    align-items: center;
+}
+.title_head{
+    font-size: 24px;
+    font-weight: 600;
+    padding: 10px 0;
+}
+.form_login_inner{
+    width: 40%;
+    display: flex;
+    background-color: #fff;
+    padding: 50px 0;
+    border:1px solid #dcdcdc;
+    border-radius: 10px;
+}
+.form_main{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px 40px;
+}
+.form_main button{
+    width: 100%;
+    margin: 20px 0;
+    font-size: 16px;
+    padding: 8px 0;
+    background-color: rgb(233, 69, 96);
+    border: 1px solid rgb(233, 69, 96);
+    border-radius: 8px;
+    cursor: pointer;
+    color: #f0f0f0;
+}
+.title_login{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+}
+.link_register{
+    display: flex;
+    flex-direction: row;
+}
+.link_register a{
+    margin-left: 5px;
+}
+.navbar_login{
+    background-color: #000000;
+    display: flex;
+    width: 100%;
+    position: fixed;
+}
+.input_login{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px 0;
+}
+.input_register{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 10px 0;
+    justify-content: space-between;
+}
+.input_register_item{
+    display: flex;
+    width: 45%;
+    flex-direction: column;
+}
+.input_register_item input{
+    font-size: 18px;
+    padding: 8px;
+}
+.input_register_item select{
+    font-size: 16px;
+    padding: 8px;
+}
+.input_register_item label {
+    padding-bottom: 10px;
+}
+.input_login label{
+    padding-bottom: 10px;
+}
+.input_login input{
+    font-size: 18px;
+    padding: 8px;
+}
+input::placeholder {
+    opacity: 0.5;
+    font-size: 18px;
+}
+.navbar_login_inner{
+    width: 5%;
+    margin-left: 30px;
+    padding: 10px 0;
+}
+.navbar_login_inner img {
+    width: 100%;
+    height: auto;
+}
