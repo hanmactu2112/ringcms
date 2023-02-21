@@ -1,4 +1,4 @@
-package com.ringme.cms.models;
+package com.ringme.cms.model;
 
 import lombok.*;
 
@@ -16,7 +16,7 @@ public class Role extends EntityBase implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "role_name")
+    @Column(name = "role_name",unique = true)
     private String roleName;
     private String description;
     private String data;

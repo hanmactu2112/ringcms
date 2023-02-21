@@ -1,4 +1,4 @@
-package com.ringme.cms.models;
+package com.ringme.cms.model;
 
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.ringme.cms.models;
+package com.ringme.cms.model;
 
 import lombok.*;
 
@@ -16,7 +16,7 @@ public class Router extends EntityBase implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "router_link")
+    @Column(name = "router_link",unique = true)
     private String router_link;
     private boolean active;
 }

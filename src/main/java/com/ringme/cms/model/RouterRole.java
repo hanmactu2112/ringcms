@@ -1,4 +1,4 @@
-package com.ringme.cms.models;
+package com.ringme.cms.model;
 
 import lombok.*;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name = "router_role")
-public class Router_role extends EntityBase implements Serializable {
+public class RouterRole extends EntityBase implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

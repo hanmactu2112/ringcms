@@ -1,11 +1,9 @@
-package com.ringme.cms.models;
+package com.ringme.cms.model;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
-import java.time.Instant;
 
 @Getter
 @Setter
