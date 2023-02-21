@@ -3,6 +3,7 @@ package com.ringme.cms.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "queue")
-public class Staff {
+public class Staff extends EntityBase implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

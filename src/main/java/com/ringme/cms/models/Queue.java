@@ -3,6 +3,7 @@ package com.ringme.cms.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Collection;
 
@@ -13,7 +14,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Entity
 @Table(name = "queue")
-public class Queue {
+public class Queue extends EntityBase implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
