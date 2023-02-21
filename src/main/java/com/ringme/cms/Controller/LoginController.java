@@ -12,13 +12,14 @@ public class LoginController {
     private PasswordEncoder passwordEncoder;
 
 
-    @GetMapping("/login")
+    @GetMapping({"/login","/"})
     public String login(){
         System.out.println(passwordEncoder.encode("123456"));
         return "login";
     }
     @GetMapping("/index")
     public String index(){
+        System.out.println("abcd");
         return "index";
     }
 }

@@ -71,7 +71,7 @@ public class SercurityConfig {
                         .passwordParameter("password")
                 ).authenticationProvider(authenticationProvider())
                 .logout((logout) -> logout.permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/admin/logout"))
-                        .logoutSuccessUrl("/index")
+                        .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"))
                 .csrf()
