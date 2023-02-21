@@ -20,7 +20,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
@@ -61,16 +60,16 @@ public class SercurityConfig {
             }).toArray(String[]::new);
             http
                     .authorizeRequests()
-                    .antMatchers(arrayRouter).hasRole(role.getRoleName());
+                    .antMatchers(arrayRouter).hasRole(role.getRoleName().split("ROLE_")[1]);
         }
         http.authorizeRequests().and()
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll().failureUrl("/login")
-                        .defaultSuccessUrl("/default",true).usernameParameter("username")
+                        .defaultSuccessUrl("/index").usernameParameter("username")
                         .passwordParameter("password")
                 ).authenticationProvider(authenticationProvider())
-                .logout((logout) -> logout.permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/admin/logout"))
+                .logout((logout) -> logout.permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"))

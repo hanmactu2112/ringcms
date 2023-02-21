@@ -19,7 +19,7 @@ public class Menu extends EntityBase implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "router_id")
     private Router router;
-    private Integer order;
+    private Integer order_num;
     @Column(name = "parent_name")
     private String parentName;
 }
