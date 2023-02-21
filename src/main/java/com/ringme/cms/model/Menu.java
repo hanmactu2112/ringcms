@@ -16,8 +16,8 @@ public class Menu extends EntityBase implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne
-    @JoinColumn(name = "id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "router_id")
     private Router router;
     private Integer order;
     @Column(name = "parent_name")
