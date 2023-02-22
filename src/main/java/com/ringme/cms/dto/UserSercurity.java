@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.User;
 
 
 import java.util.Collection;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,6 +24,8 @@ public class UserSercurity extends User {
     private String userType;
 
     private Long idProvince;
+
+    private Set<String> router;
     public UserSercurity(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }

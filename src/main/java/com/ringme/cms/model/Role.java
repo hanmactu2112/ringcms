@@ -13,8 +13,9 @@ import java.io.Serializable;
 @Entity
 @Table(name = "role")
 public class Role extends EntityBase implements Serializable {
+    private static final long serialVersionUID = -297553281792804396L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(name = "role_name",unique = true)
     private String roleName;

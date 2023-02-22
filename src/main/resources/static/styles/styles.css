@@ -448,3 +448,131 @@ li{
     display: inline;
 }
 /* end */
+/* css router */
+.table_router_left select option {
+    display: block;
+    padding: 10px;
+    font-size: 16px;
+}
+.table_router_right select option {
+    display: block;
+    padding: 10px;
+    font-size: 16px;
+}
+/* CSS cho Select option */
+.table_router_left select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .table_router_right select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  /* CSS cho input text */
+.table_router_left input[type="text"] {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    margin: 30px 0;
+  }
+  .table_router_right input[type="text"] {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    margin: 30px 0;
+  }
+  .add{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .add input{
+    width: 90%;
+    height: 40px;
+    font-size: 14px;
+  }
+  .add button{
+    padding: 10px 10px;
+  }
+  .table_router_left{
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+  }
+  .table_router_right{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 35%;
+  }
+  .table_router_right form{
+    width: 100%;
+  }
+  .table_router{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .router{
+    width: 100%;
+  }
+  .router_inner{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .button_sub_router{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .router_title{
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+  .button_sub_router button{
+    margin: 10px 0;
+  }
+  /* end css router*/
+
+  .alert-primary{
+      font-size: 16px;
+      width: 100%;
+      color: #379237;
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #BAD1C2;
+      margin-bottom: 20px;
+  }
+  .alert-danger{
+      font-size: 16px;
+      width: 100%;
+      color: #CC3636;
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #BAD1C2;
+      margin-bottom: 20px;
+  }

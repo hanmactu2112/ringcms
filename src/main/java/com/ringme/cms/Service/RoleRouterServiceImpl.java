@@ -3,7 +3,10 @@ package com.ringme.cms.Service;
 import com.ringme.cms.model.RouterRole;
 import com.ringme.cms.repository.RouterRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 

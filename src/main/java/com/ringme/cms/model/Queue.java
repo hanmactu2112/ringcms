@@ -15,8 +15,9 @@ import java.util.Collection;
 @Entity
 @Table(name = "queue")
 public class Queue extends EntityBase implements Serializable {
+    private static final long serialVersionUID = -297553281792804396L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(name = "queue_name")
     private String queueName;

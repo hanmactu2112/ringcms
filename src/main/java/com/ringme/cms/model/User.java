@@ -13,8 +13,9 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user")
 public class User extends EntityBase implements Serializable {
+    private static final long serialVersionUID = -297553281792804396L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String email;
     @Column(name = "user_name")

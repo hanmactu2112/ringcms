@@ -13,8 +13,9 @@ import java.io.Serializable;
 @Entity
 @Table(name = "router_role")
 public class RouterRole extends EntityBase implements Serializable {
+    private static final long serialVersionUID = -297553281792804396L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
