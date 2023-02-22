@@ -8,4 +8,5 @@ public interface RoleRouterService {
     List<RouterRole> findAllRouterRole();
 
     List<RouterRole> findAllRouterRoleByRoleId(Long roleId);
+    List<RouterRole> findAllRouterRoleByListRoleId(List<Long> roleIds);
 }

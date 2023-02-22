@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -24,6 +25,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     UserRepository userRepository;
     @Autowired
     UserRoleRepository userRoleRepository;
+    @Autowired
+    RoleRouterService roleRouterService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -33,7 +36,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             List<GrantedAuthority> grandList = userRoles.stream().map((e)->{
                return new SimpleGrantedAuthority(e.getRole().getRoleName());
             }).collect(Collectors.toList());
+            List<Long> roleIds = userRoles.stream().map(e->e.getRole().getId()).collect(Collectors.toList());
+            Set<String> routerLink = roleRouterService.findAllRouterRoleByListRoleId(roleIds).stream()
+                    .map(e->e.getRouter().getRouter_link()).collect(Collectors.toSet());
             UserSercurity userSercurity =  new UserSercurity(user.get().getUserName(),user.get().getPassword(),grandList, user.get().getEmail(),user.get().getFullName(),user.get().getAddress(),user.get().getPhone(),user.get().getUserType(),user.get().getIdProvince());
+            userSercurity.setRouter(routerLink);
             return userSercurity;
         }
         else {

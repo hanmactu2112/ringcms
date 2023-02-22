@@ -23,4 +23,9 @@ public class RoleRouterServiceImpl implements RoleRouterService{
     public List<RouterRole> findAllRouterRoleByRoleId(Long roleId) {
         return routerRoleRepository.findAllRouterRoleByRoleId(roleId);
     }
+
+    @Override
+    public List<RouterRole> findAllRouterRoleByListRoleId(List<Long> roleIds) {
+        return routerRoleRepository.findAllRouterRoleByListRoleId(roleIds);
+    }
 }

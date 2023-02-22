@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.AntPathMatcher;
 
 import java.util.List;
 
@@ -76,8 +77,12 @@ public class SercurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"))
                 .csrf()
-                .disable().headers().frameOptions().disable();
+                .disable().headers().frameOptions().disable().and().exceptionHandling().accessDeniedPage("/403");
         return http.build();
+    }
+    @Bean
+    public AntPathMatcher antPathMatcher() {
+        return new AntPathMatcher();
     }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
