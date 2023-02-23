@@ -20,9 +20,12 @@ public class CustomErrorController implements ErrorController {
         if (status != null && Integer.parseInt(status.toString()) == HttpStatus.NOT_FOUND.value()) {
             return "error404";
         }
-
         // Mặc định, chuyển hướng đến trang báo lỗi mặc định của Spring Boot
-        return "403";
+        if(Integer.parseInt(status.toString()) == 403){
+            return "403";
+        }
+
+        else return "index";
     }
 
 }
