@@ -4,17 +4,13 @@ import com.ringme.cms.dto.UserSercurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 public class CustomFilter extends OncePerRequestFilter {
@@ -25,7 +21,7 @@ public class CustomFilter extends OncePerRequestFilter {
         System.out.println("da chay vao");
         System.out.println(request.getRequestURI());
         if(SecurityContextHolder.getContext().getAuthentication() !=null ){
-            if (!request.getRequestURI().matches("/login")){
+            if (!request.getRequestURI().matches("/login")&&!request.getRequestURI().equals("/")&&!request.getRequestURI().equals("/logout")){
                 System.out.println(request.getRequestURI());
                 UserSercurity userDetails = (UserSercurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 Set<String> router = userDetails.getRouter();

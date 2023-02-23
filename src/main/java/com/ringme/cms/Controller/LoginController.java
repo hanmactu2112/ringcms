@@ -34,29 +34,6 @@ public class LoginController {
     @GetMapping("/index")
     public String index(HttpServletRequest httpServletRequest){
         System.out.println(httpServletRequest.getRequestURI());
-        if(isAccess(httpServletRequest)){
-            return "index";
-        }
-        else return "redirect:/login";
-    }
-
-    private boolean isAccess(HttpServletRequest request){
-        UserSercurity userDetails = (UserSercurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Set<String> router = userDetails.getRouter();
-        System.out.println("dddddddddddddd");
-        String path = request.getRequestURI();
-        for (String str : router){
-            if (antPathMatcher.match(str,path)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Kiểm tra quyền của người dùng
-    private boolean hasRole(String role) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getAuthorities().stream()
-                .anyMatch(authority -> role.equals(authority.getAuthority()));
+        return "index";
     }
 }
