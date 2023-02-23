@@ -6,6 +6,7 @@ import com.ringme.cms.Service.UserDetailsServiceImpl;
 import com.ringme.cms.model.Role;
 import com.ringme.cms.model.RouterRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -34,18 +35,16 @@ public class SercurityConfig {
 
     @Autowired
     RoleService roleService;
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder());
         return authProvider;
     }
     @Bean
-    public static PasswordEncoder encoder() {
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
     @Bean
@@ -87,5 +86,17 @@ public class SercurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().antMatchers("/images/**","/slider","/slider/**","/templates","/templates/**","/resources/**","/styles/**","/static/**","/resources/adminImages/**","/adminImages/**");
+    }
+    @Bean
+    public FilterRegistrationBean<CustomFilter> customFilterRegistration() {
+        FilterRegistrationBean<CustomFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(customFilter());
+        registration.addUrlPatterns("/**"); // kiểm tra tất cả các request
+        return registration;
+    }
+
+    @Bean
+    public CustomFilter customFilter() {
+        return new CustomFilter();
     }
 }
