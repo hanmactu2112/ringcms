@@ -1,17 +1,17 @@
 package com.ringme.cms.Controller;
 
+import com.ringme.cms.dto.UserSercurity;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
-
+import java.util.Set;
 
 @Controller
 public class LoginController {
@@ -31,28 +31,26 @@ public class LoginController {
         return "403";
     }
     @GetMapping("/index")
-    @PreAuthorize("hasPermission('/index', 'READ')")
     public String index(HttpServletRequest httpServletRequest){
         System.out.println(httpServletRequest.getRequestURI());
-//        if(true){
+        if(isAccess(httpServletRequest)){
             return "index";
-//        }
-//        else return "redirect:/login";
+        }
+        else return "redirect:/login";
     }
 
-
-//    private boolean isAccess(HttpServletRequest request){
-//        UserSercurity userDetails = (UserSercurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Set<String> router = userDetails.getRouter();
-//        System.out.println("dddddddddddddd");
-//        String path = request.getRequestURI();
-//        for (String str : router){
-//            if (antPathMatcher.match(str,path)){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    private boolean isAccess(HttpServletRequest request){
+        UserSercurity userDetails = (UserSercurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<String> router = userDetails.getRouter();
+        System.out.println("dddddddddddddd");
+        String path = request.getRequestURI();
+        for (String str : router){
+            if (antPathMatcher.match(str,path)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     // Kiểm tra quyền của người dùng
     private boolean hasRole(String role) {
