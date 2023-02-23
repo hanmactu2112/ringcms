@@ -24,6 +24,7 @@ public class CustomFilter extends OncePerRequestFilter {
         if(SecurityContextHolder.getContext().getAuthentication() !=null){
             if (!request.getRequestURI().matches("/login")&&!request.getRequestURI().equals("/")
                     &&!request.getRequestURI().equals("/logout")&&!request.getRequestURI().equals("/error")
+                    &&!request.getRequestURI().equals("/captcha.jpg")
                 && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity){
                 System.out.println(request.getRequestURI());
                 UserSercurity userDetails = (UserSercurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

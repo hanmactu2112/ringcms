@@ -40,7 +40,7 @@ public class SercurityConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/login").permitAll();
+        http.authorizeRequests().antMatchers("/login","/captcha.jpg").permitAll();
         http
                 .authorizeRequests()
                 .antMatchers("/**").authenticated()
@@ -71,7 +71,7 @@ public class SercurityConfig {
     }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/images/**","/styles/**","/static/**");
+        return (web) -> web.ignoring().antMatchers("/images/**","/styles/**","/static/**","/captcha.jpg");
     }
     @Bean
     public FilterRegistrationBean<CustomFilter> customFilterRegistration() {
