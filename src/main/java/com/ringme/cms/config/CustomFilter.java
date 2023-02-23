@@ -20,8 +20,11 @@ public class CustomFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("da chay vao");
         System.out.println(request.getRequestURI());
-        if(SecurityContextHolder.getContext().getAuthentication() !=null ){
-            if (!request.getRequestURI().matches("/login")&&!request.getRequestURI().equals("/")&&!request.getRequestURI().equals("/logout")){
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+        if(SecurityContextHolder.getContext().getAuthentication() !=null){
+            if (!request.getRequestURI().matches("/login")&&!request.getRequestURI().equals("/")
+                    &&!request.getRequestURI().equals("/logout")&&!request.getRequestURI().equals("/error")
+                && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity){
                 System.out.println(request.getRequestURI());
                 UserSercurity userDetails = (UserSercurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 Set<String> router = userDetails.getRouter();
@@ -33,7 +36,10 @@ public class CustomFilter extends OncePerRequestFilter {
                     }
                 }
                 if (check) filterChain.doFilter(request,response);
-                else response.sendError(HttpStatus.FORBIDDEN.value(),"You not have access");
+                else {
+//                    response.sendRedirect("/error");
+                    response.sendError(HttpStatus.FORBIDDEN.value(),"You not have access");
+                }
             }
             else filterChain.doFilter(request,response);
         }

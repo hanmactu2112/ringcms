@@ -1,6 +1,8 @@
 package com.ringme.cms.Controller;
 
+import com.ringme.cms.dto.UserSercurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
@@ -18,6 +20,10 @@ public class LoginController {
     @GetMapping({"/login","/"})
     public String login(){
         System.out.println(passwordEncoder.encode("123456"));
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity);
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity){
+            return "redirect:/index";
+        }
         return "login";
     }
     @GetMapping({"/403"})
@@ -29,5 +35,9 @@ public class LoginController {
     public String index(HttpServletRequest httpServletRequest){
         System.out.println(httpServletRequest.getRequestURI());
         return "index";
+    }
+    @GetMapping("/error404")
+    public String showError(){
+        return "403";
     }
 }
