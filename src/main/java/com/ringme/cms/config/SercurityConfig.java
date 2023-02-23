@@ -1,10 +1,8 @@
 package com.ringme.cms.config;
 
-import com.ringme.cms.Service.RoleRouterService;
-import com.ringme.cms.Service.RoleService;
+
 import com.ringme.cms.Service.UserDetailsServiceImpl;
-import com.ringme.cms.model.Role;
-import com.ringme.cms.model.RouterRole;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -30,11 +28,6 @@ import java.util.List;
 public class SercurityConfig {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    RoleRouterService roleRouterService;
-
-    @Autowired
-    RoleService roleService;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -53,30 +46,29 @@ public class SercurityConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-        List<Role> routerRoles = roleService.findAllRole();
         http.authorizeRequests().antMatchers("/login").permitAll();
-        for (Role role :routerRoles){
-            List<RouterRole> routerRoles1 = roleRouterService.findAllRouterRoleByRoleId(role.getId());
-            String[] arrayRouter = routerRoles1.stream().map((e) -> {
-                return e.getRouter().getRouter_link();
-            }).toArray(String[]::new);
-            http
-                    .authorizeRequests()
-                    .antMatchers(arrayRouter).hasRole(role.getRoleName().split("ROLE_")[1]);
-        }
-        http.authorizeRequests().and()
+        http
+                .authorizeRequests()
+                .antMatchers("/**").authenticated()
+                .and()
                 .formLogin((form) -> form
                         .loginPage("/login")
-                        .permitAll().failureUrl("/login")
-                        .defaultSuccessUrl("/index").usernameParameter("username")
+                        .permitAll()
+                        .failureUrl("/login")
+                        .defaultSuccessUrl("/index")
+                        .usernameParameter("username")
                         .passwordParameter("password")
                 ).authenticationProvider(authenticationProvider())
-                .logout((logout) -> logout.permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logout((logout) -> logout
+                        .permitAll()
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"))
                 .csrf()
-                .disable().headers().frameOptions().disable().and().exceptionHandling().accessDeniedPage("/403");
+                .disable().headers().frameOptions().disable()
+                .and().exceptionHandling().accessDeniedPage("/403");
+
         return http.build();
     }
     @Bean
@@ -85,13 +77,13 @@ public class SercurityConfig {
     }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/images/**","/slider","/slider/**","/templates","/templates/**","/resources/**","/styles/**","/static/**","/resources/adminImages/**","/adminImages/**");
+        return (web) -> web.ignoring().antMatchers("/images/**","/styles/**","/static/**");
     }
     @Bean
     public FilterRegistrationBean<CustomFilter> customFilterRegistration() {
         FilterRegistrationBean<CustomFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(customFilter());
-        registration.addUrlPatterns("/**"); // kiểm tra tất cả các request
+        registration.addUrlPatterns("/*");
         return registration;
     }
 
