@@ -30,11 +30,6 @@ import java.util.List;
 public class SercurityConfig {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    RoleRouterService roleRouterService;
-
-    @Autowired
-    RoleService roleService;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -53,17 +48,17 @@ public class SercurityConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-        List<Role> routerRoles = roleService.findAllRole();
+//        List<Role> routerRoles = roleService.findAllRole();
         http.authorizeRequests().antMatchers("/login").permitAll();
-        for (Role role :routerRoles){
-            List<RouterRole> routerRoles1 = roleRouterService.findAllRouterRoleByRoleId(role.getId());
-            String[] arrayRouter = routerRoles1.stream().map((e) -> {
-                return e.getRouter().getRouter_link();
-            }).toArray(String[]::new);
+//        for (Role role :routerRoles){
+//            List<RouterRole> routerRoles1 = roleRouterService.findAllRouterRoleByRoleId(role.getId());
+//            String[] arrayRouter = routerRoles1.stream().map((e) -> {
+//                return e.getRouter().getRouter_link();
+//            }).toArray(String[]::new);
             http
                     .authorizeRequests()
-                    .antMatchers(arrayRouter).hasRole(role.getRoleName().split("ROLE_")[1]);
-        }
+                    .antMatchers("/**").authenticated();
+//        }
         http.authorizeRequests().and()
                 .formLogin((form) -> form
                         .loginPage("/login")
@@ -83,20 +78,23 @@ public class SercurityConfig {
     public AntPathMatcher antPathMatcher() {
         return new AntPathMatcher();
     }
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/images/**","/slider","/slider/**","/templates","/templates/**","/resources/**","/styles/**","/static/**","/resources/adminImages/**","/adminImages/**");
-    }
-    @Bean
-    public FilterRegistrationBean<CustomFilter> customFilterRegistration() {
-        FilterRegistrationBean<CustomFilter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(customFilter());
-        registration.addUrlPatterns("/**"); // kiểm tra tất cả các request
-        return registration;
-    }
 
     @Bean
     public CustomFilter customFilter() {
         return new CustomFilter();
     }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().antMatchers("/images/**","/styles/**","/static/**");
+    }
+    @Bean
+    public FilterRegistrationBean<CustomFilter> customFilterRegistration() {
+        FilterRegistrationBean<CustomFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(customFilter());
+        registration.addUrlPatterns("/*"); // kiểm tra tất cả các request
+        return registration;
+    }
+
+
 }
