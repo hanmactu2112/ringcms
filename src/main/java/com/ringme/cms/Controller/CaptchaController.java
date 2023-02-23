@@ -1,42 +1,42 @@
 package com.ringme.cms.Controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import cn.apiclub.captcha.Captcha;
+import com.google.code.kaptcha.Producer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 
 @Controller
-@RequestMapping("/app")
 public class CaptchaController {
+    private final Producer captchaProducer;
 
-    @GetMapping("/verify")
-    public String register(Model model) {
-        model.addAttribute("captcha", genCaptcha());
-        return "verifyCaptcha";
+    @Autowired
+    public CaptchaController(Producer captchaProducer) {
+        this.captchaProducer = captchaProducer;
     }
 
-    @PostMapping("/verify")
-    public String verify(@ModelAttribute CaptchaSettings captchaSettings, Model model) {
-        if (captchaSettings.getCaptcha().equals(captchaSettings.getHiddenCaptcha())) {
-            model.addAttribute("message", "Captcha verified successfully");
-            return "success";
-        } else {
-            model.addAttribute("message", "Invalid Captcha");
-            model.addAttribute("captcha", genCaptcha());
-        }
-        return "verifyCaptcha";
-    }
+    @GetMapping("/captcha.jpg")
+    public void getCaptcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setDateHeader("Expires", 0);
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+        response.setHeader("Pragma", "no-cache");
+        response.setContentType("image/jpeg");
 
-    private CaptchaSettings genCaptcha() {
-        CaptchaSettings captchaSettings = new CaptchaSettings();
-        Captcha captcha = CaptchaGenerator.generateCaptcha(260, 80);
-        captchaSettings.setHiddenCaptcha(captcha.getAnswer());
-        captchaSettings.setCaptcha("");
-        captchaSettings.setRealCaptcha(CaptchaGenerator.encodeCaptchatoBinary(captcha));
-        return captchaSettings;
+        String text = captchaProducer.createText();
+        request.getSession().setAttribute("captcha", text);
+
+        BufferedImage image = captchaProducer.createImage(text);
+        ServletOutputStream outputStream = response.getOutputStream();
+        ImageIO.write(image, "jpg", outputStream);
+        outputStream.flush();
+        outputStream.close();
     }
 }
+
