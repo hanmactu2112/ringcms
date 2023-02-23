@@ -34,6 +34,7 @@ public class LoginController {
     @GetMapping("/index")
     public String index(HttpServletRequest httpServletRequest){
         System.out.println(httpServletRequest.getRequestURI());
+
 //        if(isAccess(httpServletRequest)){
             return "index";
 //        }
