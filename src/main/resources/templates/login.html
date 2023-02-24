@@ -36,12 +36,15 @@
                         <input class="input_item_login" name="password" id="password" type="password" placeholder="********">
                     </div>
                     <div class="form-group">
-                        <label for="captcha">Captcha:</label>
-                        <input type="text" name="captcha" class="form-control" id="captcha">
+                        <div class="input_captcha">
+                            <label for="captcha">Captcha:</label>
+                            <input type="text" name="captcha" class="form-control" id="captcha">
+                        </div>
                         <img th:src="@{/captcha.jpg}" alt="Captcha">
                     </div>
                     <div class="alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
                     <div class="alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+<!--                    <div class="alert-danger" role="alert" th:text="${errorCaptcha}" th:if="${errorCaptcha}"></div>-->
                     <button type="submit" class="btn_login">Login</button>
                 </form>
             </div>

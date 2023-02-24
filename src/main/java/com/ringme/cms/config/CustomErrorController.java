@@ -15,17 +15,20 @@ public class CustomErrorController implements ErrorController {
     public String handleError(HttpServletRequest request) {
         // Lấy mã lỗi HTTP từ request
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+        System.out.println(request.getAttribute("/error"+RequestDispatcher.ERROR_STATUS_CODE));
 
         // Nếu mã lỗi là 404, chuyển hướng đến trang báo lỗi của riêng bạn
         if (status != null && Integer.parseInt(status.toString()) == HttpStatus.NOT_FOUND.value()) {
             return "error404";
         }
-        if(status != null && Integer.parseInt(status.toString()) == HttpStatus.METHOD_NOT_ALLOWED.value()){
-            System.out.println("Not accept method Post for this API");
-            return "index";
+        else if ((status != null && Integer.parseInt(status.toString()) == HttpStatus.METHOD_NOT_ALLOWED.value())){
+            return "login";
+        } else if ((status != null && Integer.parseInt(status.toString()) == HttpStatus.FORBIDDEN.value())) {
+            return "403";
         }
-// Mặc định, chuyển hướng đến trang báo lỗi mặc định của Spring Boot
-        else return "403";
+
+        // Mặc định, chuyển hướng đến trang báo lỗi mặc định của Spring Boot
+        return "index";
     }
 
 }
