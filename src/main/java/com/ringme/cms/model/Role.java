@@ -3,6 +3,7 @@ package com.ringme.cms.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Getter
@@ -18,6 +19,7 @@ public class Role extends EntityBase implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(name = "role_name",unique = true)
+    @NotNull(message = "Role name not empty")
     private String roleName;
     private String description;
     private String data;

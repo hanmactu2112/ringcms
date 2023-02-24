@@ -633,3 +633,101 @@ li{
            display:flex;
         }
 /* end css */
+
+ /* role css */
+  .my-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .my-table th,
+  .my-table td {
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+  }
+
+  .my-table th {
+    background-color: #dddddd;
+  }
+
+  .my-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  .add-role button{
+    font-size: 14px;
+    margin-bottom: 30px;
+    padding: 10px 20px;
+  }
+
+  /* end */
+
+/* create role */
+.create-role {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+.table_role{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+.create-role label {
+  font-weight: bold;
+}
+
+.create-role input[type="text"],
+.create-role textarea {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.create-role input[type="text"]:focus,
+.create-role textarea:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.create-role button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.create-role button[type="submit"]:hover {
+  background-color: #0069d9;
+}
+.create-role-dv{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+.title-create-role{
+  padding: 20px 0;
+}
+/* Pagination links */
+.pagination{
+    padding-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    font-size: 14px;
+  }
+
+
