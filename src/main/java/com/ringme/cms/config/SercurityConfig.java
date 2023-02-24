@@ -61,7 +61,7 @@ public class SercurityConfig {
                         .defaultSuccessUrl("/index")
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .loginProcessingUrl("/login2")
+//                        .loginProcessingUrl("/login2")
                 ).authenticationProvider(authenticationProvider())
                 .logout((logout) -> logout
                         .permitAll()

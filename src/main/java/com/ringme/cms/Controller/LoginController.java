@@ -31,19 +31,19 @@ public class LoginController {
         }
         return "login";
     }
-    @PostMapping("/login2")
-    public String login(@RequestParam String username, @RequestParam String password,
-                        @RequestParam String captcha, HttpSession session, Model model,HttpServletRequest httpServletRequest) {
-        // Kiểm tra Captcha
-        String captchaText = (String) session.getAttribute("captcha");
-        if (!captcha.equalsIgnoreCase(captchaText)) {
-            session.removeAttribute("captcha");
-            session.invalidate();
-            model.addAttribute("error", "Invalid captcha");
-            return "login";
-        }
-        else return "redirect:/index";
-    }
+//    @PostMapping("/login2")
+//    public String login(@RequestParam String username, @RequestParam String password,
+//                        @RequestParam String captcha, HttpSession session, Model model,HttpServletRequest httpServletRequest) {
+//        // Kiểm tra Captcha
+//        String captchaText = (String) session.getAttribute("captcha");
+//        if (!captcha.equalsIgnoreCase(captchaText)) {
+//            session.removeAttribute("captcha");
+//            session.invalidate();
+//            model.addAttribute("error", "Invalid captcha");
+//            return "login";
+//        }
+//        else return "redirect:/index";
+//    }
 
     @GetMapping({"/403"})
     public String error(){

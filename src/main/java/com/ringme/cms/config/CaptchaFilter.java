@@ -30,9 +30,12 @@ public class CaptchaFilter extends UsernamePasswordAuthenticationFilter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
+        boolean isLOGIN_URI = request.getRequestURI().equalsIgnoreCase(LOGIN_URI);
+        boolean isMethodPost = request.getMethod().equalsIgnoreCase("POST");
 
         // Kiểm tra nếu đây là yêu cầu đăng nhập
-        if ("/login".equals(request.getRequestURI()) && request.getMethod().equalsIgnoreCase("POST")) {
+        if (isLOGIN_URI && isMethodPost) {
+            SecurityContextHolder.getContext().setAuthentication(null);
             // Lấy giá trị của captcha từ session
             HttpSession session = request.getSession();
             String captcha = (String) session.getAttribute("captcha");
@@ -46,6 +49,7 @@ public class CaptchaFilter extends UsernamePasswordAuthenticationFilter {
                 session.removeAttribute("captcha");
                 request.setAttribute("error", "Mã captcha không đúng");
                 request.getRequestDispatcher("/login?error").forward(request, response);
+                SecurityContextHolder.getContext().setAuthentication(null);
                 return;
             }
 
@@ -63,8 +67,8 @@ public class CaptchaFilter extends UsernamePasswordAuthenticationFilter {
                 request.getRequestDispatcher("/login?error").forward(request, response);
                 return;
             }
-        }
 
+        }
         // Tiếp tục filter chain
         chain.doFilter(request, response);
     }

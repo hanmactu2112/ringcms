@@ -20,21 +20,20 @@ public class CustomFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("da chay vao");
-        System.out.println(request.getRequestURI());
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+        System.out.println(request.getRequestURI()+" 1");
+        System.out.println(SecurityContextHolder.getContext().getAuthentication() + " 2");
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            boolean isMatchesLogin = !request.getRequestURI().matches("/login");
-            boolean isMatchesURI = !request.getRequestURI().equals("/");
-            boolean isMatchesLogout = !request.getRequestURI().equals("/logout");
-            boolean isMatchesError = !request.getRequestURI().equals("/error");
-            boolean isMatchesCaptcha = !request.getRequestURI().equals("/captcha.jpg");
+            boolean isMatchesLogin = request.getRequestURI().matches("/login");
+            boolean isMatchesURI = request.getRequestURI().equals("/");
+            boolean isMatchesLogout = request.getRequestURI().equals("/logout");
+            boolean isMatchesError = request.getRequestURI().equals("/error");
+            boolean isMatchesCaptcha = request.getRequestURI().equals("/captcha.jpg");
             boolean isUserSecurity = SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity;
+// xoa authen
 
-
-            if (isMatchesLogin && isMatchesURI
-                    && isMatchesLogout && isMatchesError
-                    && isMatchesCaptcha
+            if (!isMatchesLogin && !isMatchesURI
+                    && !isMatchesLogout && !isMatchesError
+                    && !isMatchesCaptcha
                     && isUserSecurity) {
                 System.out.println(request.getRequestURI());
                 UserSercurity userDetails = (UserSercurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
