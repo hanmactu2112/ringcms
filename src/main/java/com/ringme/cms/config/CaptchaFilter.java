@@ -5,7 +5,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,13 +26,17 @@ public class CaptchaFilter extends UsernamePasswordAuthenticationFilter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
-        System.err.println("request.getRequestURI(): "+request.getRequestURI());
+        System.err.println("CaptchaFilter: "+request.getRequestURI()+" "+request.getMethod());
 
         // Kiểm tra nếu đây là yêu cầu đăng nhập
-        if ("/login".equals(request.getRequestURI()) && request.getMethod().equalsIgnoreCase("POST")) {
+        if (request.getMethod().equalsIgnoreCase("GET")){
+            chain.doFilter(request, response);
+        }
+        else if ("/login".equals(request.getRequestURI()) && request.getMethod().equalsIgnoreCase("POST")) {
             // Lấy giá trị của captcha từ session
             HttpSession session = request.getSession();
             String captcha = (String) session.getAttribute(CAPTCHA_SESSION_KEY);
+            System.err.println("CaptchaFilter: chay vao if Captcha filter");
 
             // Lấy giá trị của captcha được gửi lên từ form đăng nhập
             String captchaValue = request.getParameter("captcha");
@@ -45,9 +52,17 @@ public class CaptchaFilter extends UsernamePasswordAuthenticationFilter {
             if (captcha == null || captchaValue == null || !captcha.equalsIgnoreCase(captchaValue)) {
                 // Nếu captcha không đúng, xóa session và forward về trang đăng nhập với thông báo lỗi
                 session.removeAttribute("captcha");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/login");
-                request.getSession().setAttribute("error", "Captcha invalid");
-                dispatcher.forward(request, response);
+//                RequestDispatcher dispatcher = request.getRequestDispatcher("/login");
+//                request.getSession().setAttribute("error", "Captcha invalid");
+                System.err.println("CaptchaFilter + request: "+request.getParameter("username"));
+                System.err.println("CaptchaFilter + request: "+request.getParameter("password"));
+//                request.removeAttribute("username");
+//                request.removeAttribute("password");
+
+                request.getRequestDispatcher("/login").forward(request,response);
+            }
+            else {
+                chain.doFilter(request, response);
                 return;
             }
 
@@ -66,9 +81,13 @@ public class CaptchaFilter extends UsernamePasswordAuthenticationFilter {
 //                return;
 //            }
         }
+        else {
+            chain.doFilter(request, response);
+            return;
+        }
 
         // Tiếp tục filter chain
-        chain.doFilter(request, response);
+
     }
 
     @Override

@@ -53,7 +53,7 @@ public class SercurityConfig  {
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll()
-                        .failureUrl("/login")
+                        .failureUrl("/login-error")
                         .defaultSuccessUrl("/index")
                         .usernameParameter("username")
                         .passwordParameter("password")

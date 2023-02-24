@@ -2,10 +2,7 @@ package com.ringme.cms.Controller;
 
 import com.ringme.cms.dto.UserSercurity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -13,11 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
@@ -31,13 +26,23 @@ public class LoginController {
     @GetMapping({"/login","/"})
     public String login(Model model, HttpServletRequest request){
         System.out.println(passwordEncoder.encode("123456"));
-        System.out.println(request.getSession().getAttribute("error"));
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity);
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity){
             return "redirect:/index";
         }
-        model.addAttribute("error",request.getSession().getAttribute("error"));
         return "login";
+    }
+    @GetMapping("/login-error")
+    public String loginerror(RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("error","Username or password not correct");
+        System.err.println("vl chu");
+        return "redirect:/login";
+    }
+    @PostMapping("/login")
+    public String login(RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("error","Captcha invalid");
+        System.err.println("vl chu");
+        return "redirect:/login";
     }
 
     @GetMapping({"/403"})

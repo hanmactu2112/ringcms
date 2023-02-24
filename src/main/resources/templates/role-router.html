@@ -65,7 +65,7 @@
                 <input type="text" id="myInput1" onkeyup="searchFunction1()" placeholder="Search for available">
                 <form th:action="@{/router-role/create}" method="post" id="formActive">
                   <input name="id" th:field = ${role.id} hidden readonly>
-                  <select id="mySelect1" size="5" name="router" multiple>
+                  <select id="mySelect1" size="5" name="router1" multiple>
                     <option th:each = "router,istat:${routers}" th:value="${router.id}" th:text="${router.router_link}"></option>
                   </select>
                 </form>
@@ -82,7 +82,7 @@
                 <input type="text" id="myInput2" onkeyup="searchFunction2()" placeholder="Search for assigned">
                 <form th:action="@{/router-role/delete}" method="post" id="formUnActive">
                   <input name="id" th:field = ${role.id} hidden readonly>
-                  <select id="mySelect2" size="5" name="router" multiple>
+                  <select id="mySelect2" size="5" name="router2" multiple>
                     <option th:each = "routerRole,istat:${routerRoles}" th:value="${routerRole.id}" th:text="${routerRole.router.router_link}"></option>
                   </select>
                 </form>

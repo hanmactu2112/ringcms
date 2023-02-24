@@ -18,9 +18,9 @@ public class CustomFilter extends OncePerRequestFilter {
     private AntPathMatcher antPathMatcher;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("da chay vao");
-        System.out.println(request.getRequestURI());
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+        System.err.println("custom filter: da chay vao");
+        System.err.println("custom filter: "+request.getRequestURI()+" "+request.getMethod());
+        System.err.println(SecurityContextHolder.getContext().getAuthentication());
         if(SecurityContextHolder.getContext().getAuthentication() !=null){
             if (!request.getRequestURI().matches("/login")&&!request.getRequestURI().equals("/")
                     &&!request.getRequestURI().equals("/logout")&&!request.getRequestURI().equals("/error")
@@ -36,14 +36,26 @@ public class CustomFilter extends OncePerRequestFilter {
                         check =  true;
                     }
                 }
-                if (check) filterChain.doFilter(request,response);
+                if (check) {
+//                    filterChain.doFilter(request,response);
+                    request.getRequestDispatcher(path).forward(request,response);
+                    return;
+                }
                 else {
 //                    response.sendRedirect("/error");
                     response.sendError(HttpStatus.FORBIDDEN.value(),"You not have access");
                 }
             }
-            else filterChain.doFilter(request,response);
+            else {
+                request.getRequestDispatcher(request.getRequestURI()).forward(request,response);
+//                filterChain.doFilter(request,response);
+                return;
+            }
         }
-        else filterChain.doFilter(request,response);
+        else {
+            request.getRequestDispatcher(request.getRequestURI()).forward(request,response);
+//            filterChain.doFilter(request,response);
+            return;
+        }
     }
 }

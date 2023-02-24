@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -50,34 +51,35 @@ public class RouterRoleController {
             return "redirect:/role/index";
         }
     }
-    @GetMapping("/router-role/delete")
-    public String deleteRouterRole(@RequestParam("id")Long id,@RequestParam("Router")List<Long> idRouterRole,RedirectAttributes redirectAttributes){
+    @PostMapping("/router-role/delete")
+    public String deleteRouterRole(@RequestParam("id")Long id,@RequestParam("Router1")List<Long> idRouterRole,RedirectAttributes redirectAttributes){
         if (idRouterRole !=null){
             try {
                 roleRouterService.deleteRoleRouter(idRouterRole);
                 redirectAttributes.addFlashAttribute("success","Success");
-                return "redirect:/role/view/"+id;
+                return "redirect:/role/index";
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error","Error");
-                return "redirect:/role/view/"+id;
+                return "redirect:/role/index";
             }
         }
         redirectAttributes.addFlashAttribute("error","Error");
-        return "redirect:/role/view/"+id;
+        return "redirect:/role/index";
     }
-    @GetMapping("/router-role/create")
-    public String createRouterRole(@RequestParam("id")Long id, @RequestParam("Router")List<Long> idRouterRole,RedirectAttributes redirectAttributes){
-        if (idRouterRole !=null){
+    @PostMapping("/router-role/create")
+    public String createRouterRole(@RequestParam("id")Long id, @RequestParam("Router2")List<Long> idRouterRole,RedirectAttributes redirectAttributes){
+        System.err.println("role-create: "+idRouterRole);
+        if (!idRouterRole.isEmpty()&& idRouterRole != null){
             try {
                 roleRouterService.createRoleRouter(id,idRouterRole);
                 redirectAttributes.addFlashAttribute("success","Success");
-                return "redirect:/role/view/"+id;
+                return "redirect:/role/index";
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error","Error");
-                return "redirect:/role/view/"+id;
+                return "redirect:/role/index";
             }
         }
         redirectAttributes.addFlashAttribute("error","Error");
-        return "redirect:/role/view/"+id;
+        return "redirect:/role/index";
     }
 }
