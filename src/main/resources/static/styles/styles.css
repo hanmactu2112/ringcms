@@ -730,4 +730,17 @@ li{
     font-size: 14px;
   }
 
+  /* router role */
+  .router_role_info_item{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+  }
+  .router_role_title{
+    width: 20%;
+  }
+  .router_role_des{
+    width: 80%;
+  }
+
 

@@ -9,4 +9,9 @@ public interface RoleRouterService {
 
     List<RouterRole> findAllRouterRoleByRoleId(Long roleId);
     List<RouterRole> findAllRouterRoleByListRoleId(List<Long> roleIds);
+
+    void saveRoleRouter(RouterRole routerRole) ;
+    void deleteRoleRouter(List<Long> id) throws Exception;
+    void createRoleRouter(Long idRole, List<Long> idRouter) throws Exception;
+
 }

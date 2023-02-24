@@ -1,13 +1,7 @@
 package com.ringme.cms.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
@@ -29,9 +23,10 @@ public class CaptchaFilter extends UsernamePasswordAuthenticationFilter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
+        System.err.println("request.getRequestURI(): "+request.getRequestURI());
 
         // Kiểm tra nếu đây là yêu cầu đăng nhập
-        if (LOGIN_URI.equals(request.getRequestURI()) && request.getMethod().equalsIgnoreCase("POST")) {
+        if ("/login".equals(request.getRequestURI()) && request.getMethod().equalsIgnoreCase("POST")) {
             // Lấy giá trị của captcha từ session
             HttpSession session = request.getSession();
             String captcha = (String) session.getAttribute(CAPTCHA_SESSION_KEY);

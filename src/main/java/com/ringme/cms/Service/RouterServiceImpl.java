@@ -1,6 +1,7 @@
 package com.ringme.cms.Service;
 
 import com.ringme.cms.model.Router;
+import com.ringme.cms.model.RouterRole;
 import com.ringme.cms.repository.RouterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,10 @@ public class RouterServiceImpl implements RouterService{
     @Override
     public void updateStatus(boolean check, Long id) {
         routerRepository.updateStatus(check, id);
+    }
+
+    @Override
+    public List<Router> findAllRouterNotInRole(List<Long> roleIds) {
+        return routerRepository.findAllRouterNotInRole(roleIds);
     }
 }

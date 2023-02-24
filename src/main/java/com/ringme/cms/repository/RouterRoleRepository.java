@@ -13,4 +13,6 @@ public interface RouterRoleRepository extends JpaRepository<RouterRole,Long> {
     List<RouterRole> findAllRouterRoleByRoleId(Long roleId);
     @Query(value = "Select * from router_role rr where rr.role_id in (?1)",nativeQuery = true)
     List<RouterRole> findAllRouterRoleByListRoleId(List<Long> roleIds);
+//    @Query(value = "SELECT * from router_role rr  inner join router r on r.id = rr.router_id where rr.role_id =?1",nativeQuery = true)
+//    List<RouterRole> findAllRouterByIdRole(Long roleIds);
 }

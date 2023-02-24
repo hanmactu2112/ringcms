@@ -13,4 +13,6 @@ public interface RouterService {
     List<Router> findAllRouterActive();
     void updateStatus(boolean check, Long id);
 
+    List<Router> findAllRouterNotInRole(List<Long> roleIds) ;
+
 }
