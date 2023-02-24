@@ -2,6 +2,7 @@ package com.ringme.cms.Controller;
 
 import com.ringme.cms.dto.UserSercurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,12 +29,14 @@ public class LoginController {
     private AuthenticationManager authenticationManager;
 
     @GetMapping({"/login","/"})
-    public String login(){
+    public String login(Model model, HttpServletRequest request){
         System.out.println(passwordEncoder.encode("123456"));
+        System.out.println(request.getSession().getAttribute("error"));
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity);
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity){
             return "redirect:/index";
         }
+        model.addAttribute("error",request.getSession().getAttribute("error"));
         return "login";
     }
 

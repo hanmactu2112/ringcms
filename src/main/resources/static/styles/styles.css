@@ -620,5 +620,16 @@ li{
     font-family: 'Montserrat', sans-serif;
     background-color: #555;
   }
-
+    .form-group{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .input_captcha input{
+            height: 40px;
+    }
+    .input_captcha {
+           display:flex;
+        }
 /* end css */
