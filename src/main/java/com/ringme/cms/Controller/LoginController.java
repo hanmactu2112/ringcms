@@ -2,6 +2,9 @@ package com.ringme.cms.Controller;
 
 import com.ringme.cms.dto.UserSercurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -9,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +24,8 @@ public class LoginController {
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private AntPathMatcher antPathMatcher;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @GetMapping({"/login","/"})
     public String login(){
@@ -29,18 +35,6 @@ public class LoginController {
             return "redirect:/index";
         }
         return "login";
-    }
-    @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password,
-                        @RequestParam String captcha, HttpSession session, Model model,HttpServletRequest httpServletRequest) {
-        // Kiểm tra Captcha
-        String captchaText = (String) session.getAttribute("captcha");
-        if (!captcha.equalsIgnoreCase(captchaText)) {
-            session.invalidate();
-            model.addAttribute("error", "Invalid captcha");
-            return "login";
-        }
-        else return "redirect:/index";
     }
 
     @GetMapping({"/403"})
@@ -56,5 +50,9 @@ public class LoginController {
     @GetMapping("/error404")
     public String showError(){
         return "403";
+    }
+    @GetMapping("/error405")
+    public String showError405(){
+        return "login";
     }
 }

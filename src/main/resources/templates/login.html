@@ -36,6 +36,7 @@
                         <input class="input_item_login" name="password" id="password" type="password" placeholder="********">
                     </div>
                     <div class="form-group">
+                        <div th:text="${session.captcha}">John Doe</div>
                         <label for="captcha">Captcha:</label>
                         <input type="text" name="captcha" class="form-control" id="captcha">
                         <img th:src="@{/captcha.jpg}" alt="Captcha">

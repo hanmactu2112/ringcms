@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,14 +16,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.AntPathMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class SercurityConfig {
+public class SercurityConfig  {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    CaptchaFilter captchaFilter;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -41,8 +46,8 @@ public class SercurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/login","/captcha.jpg").permitAll();
-        http
-                .authorizeRequests()
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/login").permitAll();
+        http.addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class).authorizeRequests()
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin((form) -> form
@@ -52,6 +57,7 @@ public class SercurityConfig {
                         .defaultSuccessUrl("/index")
                         .usernameParameter("username")
                         .passwordParameter("password")
+
                 ).authenticationProvider(authenticationProvider())
                 .logout((logout) -> logout
                         .permitAll()
