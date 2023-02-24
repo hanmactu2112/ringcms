@@ -42,6 +42,7 @@ public class RoleController {
     public String updateRole(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes){
         Optional<Role> role = roleService.findRoleById(id);
         if (role.isPresent()){
+            role.get().setRoleName(role.get().getRoleName().split("ROLE_")[1]);
             model.addAttribute("role",role.get());
             return "create-role";
         }
