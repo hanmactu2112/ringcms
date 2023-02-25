@@ -43,8 +43,8 @@ public class CustomFilter extends OncePerRequestFilter {
                 }
                 else {
 //                    response.sendRedirect("/error");
-                    request.getRequestDispatcher(path).forward(request,response);
-//                    response.sendError(HttpStatus.FORBIDDEN.value(),"You not have access");
+//                    request.getRequestDispatcher(path).forward(request,response);
+                    response.sendError(HttpStatus.FORBIDDEN.value(),"You not have access");
                 }
             }
             else {
