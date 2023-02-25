@@ -23,10 +23,11 @@ public class CustomFilter extends OncePerRequestFilter {
         System.err.println(SecurityContextHolder.getContext().getAuthentication());
         if(SecurityContextHolder.getContext().getAuthentication() !=null){
             if (!request.getRequestURI().matches("/login")&&!request.getRequestURI().equals("/")
+                    &&!request.getRequestURI().equals("/index")
                     &&!request.getRequestURI().equals("/logout")
                     &&!request.getRequestURI().equals("/captcha.jpg")
                 && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity){
-                System.out.println("Custom filter have user: "+request.getRequestURI());
+                System.err.println("Custom filter have user: "+request.getRequestURI());
                 UserSercurity userDetails = (UserSercurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 Set<String> router = userDetails.getRouter();
                 String path = request.getRequestURI();
@@ -36,6 +37,7 @@ public class CustomFilter extends OncePerRequestFilter {
                         check =  true;
                     }
                 }
+                System.out.println("CustomFilter check:"+ check);
                 if (check) {
 //                    filterChain.doFilter(request,response);
                     request.getRequestDispatcher(path).forward(request,response);

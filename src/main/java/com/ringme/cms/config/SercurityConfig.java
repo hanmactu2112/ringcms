@@ -59,7 +59,7 @@ public class SercurityConfig  {
                         .loginPage("/login")
                         .permitAll()
                         .failureUrl("/login-error")
-                        .defaultSuccessUrl("/index",true)
+                        .defaultSuccessUrl("/index")
                         .usernameParameter("username")
                         .passwordParameter("password")
 
