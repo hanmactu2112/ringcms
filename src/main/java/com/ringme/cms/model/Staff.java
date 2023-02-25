@@ -11,7 +11,7 @@ import java.io.Serializable;
 @ToString
 @AllArgsConstructor
 @Entity
-@Table(name = "queue")
+@Table(name = "staff")
 public class Staff extends EntityBase implements Serializable {
     private static final long serialVersionUID = -297553281792804396L;
     @Id

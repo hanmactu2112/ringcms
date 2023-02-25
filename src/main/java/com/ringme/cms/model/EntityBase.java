@@ -22,6 +22,4 @@ public abstract class EntityBase implements Serializable {
     @Column
     @LastModifiedDate
     private Date modifiedDate;
-
-
 }

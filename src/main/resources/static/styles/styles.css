@@ -742,5 +742,66 @@ li{
   .router_role_des{
     width: 80%;
   }
+  /* css user */
+  .search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25vh;
+  }
+  tr a{
+    text-decoration: none;
+  }
+  .form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .form__group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+  }
+
+  .form__label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .form__input, .form__select {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e6e6e6;
+    font-size: 16px;
+    color: #333;
+    width: 250px;
+  }
+
+  .form__select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23333' d='M4 6.5L0 2h8z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 12px);
+    background-position-y: center;
+    background-size: 8px 8px;
+  }
+
+  .form__button {
+    padding: 10px 20px;
+    margin-left: 10px;
+  }
+
 
 

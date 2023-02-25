@@ -14,12 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@Component
 public class CaptchaFilter extends UsernamePasswordAuthenticationFilter {
     private static final String CAPTCHA_SESSION_KEY = "captcha";
     private static final String LOGIN_URI = "/login";
-    @Autowired
-    private AuthenticationManager authenticationManager;
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)

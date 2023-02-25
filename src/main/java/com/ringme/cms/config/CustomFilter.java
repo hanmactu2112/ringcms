@@ -1,6 +1,6 @@
 package com.ringme.cms.config;
 
-import com.ringme.cms.dto.UserSercurity;
+import com.ringme.cms.dto.UserSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
+
 
 public class CustomFilter extends OncePerRequestFilter {
     @Autowired
@@ -26,9 +27,9 @@ public class CustomFilter extends OncePerRequestFilter {
                     &&!request.getRequestURI().equals("/index")
                     &&!request.getRequestURI().equals("/logout")
                     &&!request.getRequestURI().equals("/captcha.jpg")
-                && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity){
+                && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSecurity){
                 System.err.println("Custom filter have user: "+request.getRequestURI());
-                UserSercurity userDetails = (UserSercurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                UserSecurity userDetails = (UserSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 Set<String> router = userDetails.getRouter();
                 String path = request.getRequestURI();
                 boolean check = false;
