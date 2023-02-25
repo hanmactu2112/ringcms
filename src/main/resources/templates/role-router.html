@@ -59,7 +59,11 @@
                 </div>
               </div>
             </div>
+
+            <div class="alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+            <div class="alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
             <div class="table_router">
+
               <div class="table_router_left" >
 
                 <input type="text" id="myInput1" onkeyup="searchFunction1()" placeholder="Search for available">

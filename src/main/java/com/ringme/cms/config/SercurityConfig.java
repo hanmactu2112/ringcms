@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -46,15 +46,20 @@ public class SercurityConfig  {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/login","/captcha.jpg").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/login").permitAll();
         http.addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class).authorizeRequests()
                 .antMatchers("/**").authenticated()
                 .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .invalidSessionUrl("/login?time=expired")
+                .maximumSessions(1)
+                .expiredUrl("/login?time=expired")
+                .and().and()
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll()
                         .failureUrl("/login-error")
-                        .defaultSuccessUrl("/index")
+                        .defaultSuccessUrl("/index",true)
                         .usernameParameter("username")
                         .passwordParameter("password")
 

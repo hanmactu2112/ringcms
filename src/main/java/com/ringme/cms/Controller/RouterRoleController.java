@@ -52,34 +52,34 @@ public class RouterRoleController {
         }
     }
     @PostMapping("/router-role/delete")
-    public String deleteRouterRole(@RequestParam("id")Long id,@RequestParam("Router1")List<Long> idRouterRole,RedirectAttributes redirectAttributes){
+    public String deleteRouterRole(@RequestParam("id")Long id,@RequestParam("router2")List<Long> idRouterRole,RedirectAttributes redirectAttributes){
         if (idRouterRole !=null){
             try {
                 roleRouterService.deleteRoleRouter(idRouterRole);
                 redirectAttributes.addFlashAttribute("success","Success");
-                return "redirect:/role/index";
+                return "redirect:/role/view/"+id;
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error","Error");
-                return "redirect:/role/index";
+                return "redirect:/role/view/"+id;
             }
         }
         redirectAttributes.addFlashAttribute("error","Error");
-        return "redirect:/role/index";
+        return "redirect:/role/view/"+id;
     }
     @PostMapping("/router-role/create")
-    public String createRouterRole(@RequestParam("id")Long id, @RequestParam("Router2")List<Long> idRouterRole,RedirectAttributes redirectAttributes){
+    public String createRouterRole(@RequestParam("id")Long id, @RequestParam("router1")List<Long> idRouterRole,RedirectAttributes redirectAttributes){
         System.err.println("role-create: "+idRouterRole);
         if (!idRouterRole.isEmpty()&& idRouterRole != null){
             try {
                 roleRouterService.createRoleRouter(id,idRouterRole);
                 redirectAttributes.addFlashAttribute("success","Success");
-                return "redirect:/role/index";
+                return "redirect:/role/view/"+id;
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error","Error");
-                return "redirect:/role/index";
+                return "redirect:/role/view/"+id;
             }
         }
         redirectAttributes.addFlashAttribute("error","Error");
-        return "redirect:/role/index";
+        return "redirect:/role/view/"+id;
     }
 }

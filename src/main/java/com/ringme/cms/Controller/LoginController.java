@@ -23,7 +23,7 @@ public class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @GetMapping({"/login","/"})
+    @GetMapping("/login")
     public String login(Model model, HttpServletRequest request){
         System.out.println(passwordEncoder.encode("123456"));
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity);
@@ -37,6 +37,10 @@ public class LoginController {
         redirectAttributes.addFlashAttribute("error","Username or password not correct");
         System.err.println("vl chu");
         return "redirect:/login";
+    }
+    @GetMapping("/")
+    public String getHome(){
+        return "redirect:/index";
     }
     @PostMapping("/login")
     public String login(RedirectAttributes redirectAttributes){
@@ -54,13 +58,5 @@ public class LoginController {
     public String index(HttpServletRequest httpServletRequest){
         System.out.println(httpServletRequest.getRequestURI());
         return "index";
-    }
-    @GetMapping("/error404")
-    public String showError(){
-        return "403";
-    }
-    @GetMapping("/error405")
-    public String showError405(){
-        return "login";
     }
 }
