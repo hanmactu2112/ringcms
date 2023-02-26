@@ -10,5 +10,6 @@ import java.util.List;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role,Long> {
-
+    @Query(value = "Select r.* from role r where r.id not in (?1)",nativeQuery = true)
+    List<Role> findAllRoleNotInListIdRole(List<Long> id);
 }

@@ -1,6 +1,6 @@
 package com.ringme.cms.config;
 
-import com.ringme.cms.dto.UserSercurity;
+import com.ringme.cms.dto.UserSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,43 +14,53 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
+
 public class CustomFilter extends OncePerRequestFilter {
     @Autowired
     private AntPathMatcher antPathMatcher;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println(request.getRequestURI()+" 1");
-        System.out.println(SecurityContextHolder.getContext().getAuthentication() + " 2");
-        if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            boolean isMatchesLogin = request.getRequestURI().matches("/login");
-            boolean isMatchesURI = request.getRequestURI().equals("/");
-            boolean isMatchesLogout = request.getRequestURI().equals("/logout");
-            boolean isMatchesError = request.getRequestURI().equals("/error");
-            boolean isMatchesCaptcha = request.getRequestURI().equals("/captcha.jpg");
-            boolean isUserSecurity = SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSercurity;
-// xoa authen
-
-            if (!isMatchesLogin && !isMatchesURI
-                    && !isMatchesLogout && !isMatchesError
-                    && !isMatchesCaptcha
-                    && isUserSecurity) {
-                System.out.println(request.getRequestURI());
-                UserSercurity userDetails = (UserSercurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.err.println("custom filter: da chay vao");
+        System.err.println("custom filter: "+request.getRequestURI()+" "+request.getMethod());
+        System.err.println(SecurityContextHolder.getContext().getAuthentication());
+        if(SecurityContextHolder.getContext().getAuthentication() !=null){
+            if (!request.getRequestURI().matches("/login")&&!request.getRequestURI().equals("/")
+                    &&!request.getRequestURI().equals("/index")
+                    &&!request.getRequestURI().equals("/logout")
+                    &&!request.getRequestURI().equals("/captcha.jpg")
+                    && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSecurity){
+                System.err.println("Custom filter have user: "+request.getRequestURI());
+                UserSecurity userDetails = (UserSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 Set<String> router = userDetails.getRouter();
                 String path = request.getRequestURI();
                 boolean check = false;
-                for (String str : router) {
-                    if (antPathMatcher.match(str, path)) {
-                        check = true;
+                for (String str : router){
+                    if (antPathMatcher.match(str,path)){
+                        check =  true;
                     }
                 }
-                if (check) filterChain.doFilter(request, response);
+                System.out.println("CustomFilter check:"+ check);
+                if (check) {
+//                    filterChain.doFilter(request,response);
+                    request.getRequestDispatcher(path).forward(request,response);
+                    return;
+                }
                 else {
 //                    response.sendRedirect("/error");
-                    response.sendError(HttpStatus.FORBIDDEN.value(), "You not have access");
+//                    request.getRequestDispatcher(path).forward(request,response);
+                    response.sendError(HttpStatus.FORBIDDEN.value(),"You not have access");
                 }
-            } else filterChain.doFilter(request, response);
-        } else filterChain.doFilter(request, response);
+            }
+            else {
+                request.getRequestDispatcher(request.getRequestURI()).forward(request,response);
+//                filterChain.doFilter(request,response);
+                return;
+            }
+        }
+        else {
+            request.getRequestDispatcher(request.getRequestURI()).forward(request,response);
+//            filterChain.doFilter(request,response);
+            return;
+        }
     }
 }
