@@ -1,6 +1,7 @@
 package com.ringme.cms.model;
 
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name = "mission")
+@EntityListeners(AuditingEntityListener.class)
 public class Department extends EntityBase implements Serializable {
     private static final long serialVersionUID = -297553281792804396L;
     @Id

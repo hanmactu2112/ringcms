@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-3IMwAE5uxPFX28+5RtJ5n5QV22Jmzxjcvg9V8Wj0SN+2wGyqmzyfcBnpLe8WJ3Iq3pSgTLJNfL+8WzpljYvH4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" />
 
-    <title>Router</title>
+    <title>User</title>
     <link rel="icon" type="image/x-icon" th:href="@{/images/logo-vnpost.png}" >
 </head>
 
@@ -33,23 +33,46 @@
                 <div class="router">
                     <div class="router_inner">
                         <div class="router_title">
-                            Router
+                            User - Role
                         </div>
-                        <form th:action="@{/add-router}" method="post" >
-                            <div class="alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
-                            <div class="alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
-                            <div class="add">
-                                <input type="text" name="router" placeholder="New router(s)">
-                                <button type="submit">ADD</button>
+                        <div class="router_role_info">
+                            <div class="router_role_info_item">
+                                <div class="router_role_title">
+                                    Username:
+                                </div>
+                                <div class="router_role_des" th:text ="${user.userName}">
+                                    ADMIN
+                                </div>
                             </div>
-                        </form>
+                            <div class="router_role_info_item">
+                                <div class="router_role_title" >
+                                    FullName :
+                                </div>
+                                <div class="router_role_des" th:text ="${user.fullName}?:'Not set'">
+                                    ADMIN
+                                </div>
+                            </div>
+                            <div class="router_role_info_item">
+                                <div class="router_role_title">
+                                    email:
+                                </div>
+                                <div class="router_role_des" th:text ="${user.email}?:'Not set'">
+                                    ADMIN
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+                        <div class="alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
                         <div class="table_router">
+
                             <div class="table_router_left" >
 
                                 <input type="text" id="myInput1" onkeyup="searchFunction1()" placeholder="Search for available">
-                                <form th:action="@{/active-router}" method="post" id="formActive">
-                                    <select id="mySelect1" size="5" name="router" multiple>
-                                        <option th:each = "router,istat:${routerUnActive}" th:value="${router.id}" th:text="${router.router_link}"></option>
+                                <form th:action="@{/user-role/create}" method="post" id="formActive">
+                                    <input name="id" th:field = ${user.id} hidden readonly>
+                                    <select id="mySelect1" size="5" name="role1" multiple>
+                                        <option th:each = "role,istat:${roles}" th:value="${role.id}" th:text="${role.roleName}"></option>
                                     </select>
                                 </form>
                             </div>
@@ -63,9 +86,10 @@
                             </div>
                             <div class="table_router_right">
                                 <input type="text" id="myInput2" onkeyup="searchFunction2()" placeholder="Search for assigned">
-                                <form th:action="@{/unactive-router}" method="post" id="formUnActive">
-                                    <select id="mySelect2" size="5" name="router" multiple>
-                                        <option th:each = "router,istat:${routerActive}" th:value="${router.id}" th:text="${router.router_link}"></option>
+                                <form th:action="@{/user-role/delete}" method="post" id="formUnActive">
+                                    <input name="id" th:field = ${user.id} hidden readonly>
+                                    <select id="mySelect2" size="5" name="role2" multiple>
+                                        <option th:each = "user_role,istat:${user_roles}" th:value="${user_role.id}" th:text="${user_role.role.roleName}"></option>
                                     </select>
                                 </form>
                             </div>

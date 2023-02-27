@@ -39,8 +39,6 @@ public class RoleRouterServiceImpl implements RoleRouterService{
 
     @Override
     public void saveRoleRouter(RouterRole routerRole) {
-        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-        routerRole.setCreatedDate(date);
         routerRoleRepository.save(routerRole);
     }
 
@@ -60,14 +58,12 @@ public class RoleRouterServiceImpl implements RoleRouterService{
     @Override
     public void createRoleRouter(Long idRole, List<Long> idRouter)throws Exception {
         Optional<Role> role = roleRepository.findById(idRole);
-        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         if (role.isPresent()){
           List<Router> routers = routerRepository.findAllRouterByListId(idRouter);
           for(Router router: routers){
               RouterRole routerRole = new RouterRole();
               routerRole.setRouter(router);
               routerRole.setRole(role.get());
-              routerRole.setCreatedDate(date);
               routerRoleRepository.save(routerRole);
           }
         }

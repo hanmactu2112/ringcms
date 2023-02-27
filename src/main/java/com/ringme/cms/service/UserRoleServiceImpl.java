@@ -23,6 +23,25 @@ public class UserRoleServiceImpl implements UserRoleService{
     }
 
     @Override
+    public void deleteUserRoleById(List<Long> ids) throws Exception {
+        try {
+            userRoleRepository.deleteAllById(ids);
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    @Override
+    public void saveAllUserRole(List<UserRole> userRoles) throws Exception {
+        try{
+            userRoleRepository.saveAll(userRoles);
+        }catch (Exception e){
+            throw new Exception();
+        }
+    }
+
+    @Override
     public void addUserRole(UserRole userRole) {
         userRoleRepository.save(userRole);
     }

@@ -1,9 +1,9 @@
 package com.ringme.cms.controller;
 
 import com.ringme.cms.dto.UserSecurity;
+import com.ringme.cms.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,6 +23,8 @@ public class LoginController {
     private AntPathMatcher antPathMatcher;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    MenuService menuService;
 
     @GetMapping("/login")
     public String login(Model model, HttpServletRequest request){
@@ -56,32 +58,9 @@ public class LoginController {
         return "403";
     }
     @GetMapping("/index")
-    public String index(HttpServletRequest httpServletRequest){
-        System.out.println(httpServletRequest.getRequestURI());
-
-//        if(isAccess(httpServletRequest)){
-            return "index";
-//        }
-//        else return "redirect:/login";
-    }
-
-//    private boolean isAccess(HttpServletRequest request){
-//        UserSercurity userDetails = (UserSercurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Set<String> router = userDetails.getRouter();
-//        System.out.println("dddddddddddddd");
-//        String path = request.getRequestURI();
-//        for (String str : router){
-//            if (antPathMatcher.match(str,path)){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
-    // Kiểm tra quyền của người dùng
-    private boolean hasRole(String role) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getAuthorities().stream()
-                .anyMatch(authority -> role.equals(authority.getAuthority()));
+    public String index(HttpServletRequest httpServletRequest,Model model){
+        model.addAttribute("listMenu",menuService.getListMenuNoParent());
+        model.addAttribute("mapMenu",menuService.getMapMenuParent());
+        return "index";
     }
 }

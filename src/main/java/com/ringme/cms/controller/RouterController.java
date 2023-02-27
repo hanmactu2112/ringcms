@@ -1,5 +1,6 @@
 package com.ringme.cms.controller;
 
+import com.ringme.cms.service.MenuService;
 import com.ringme.cms.service.RouterService;
 import com.ringme.cms.model.Router;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,17 @@ public class RouterController {
     @Autowired
     RouterService routerService;
 
+    @Autowired
+    MenuService menuService;
+
     @GetMapping("/admin/router")
     public String indexRouter(Model model){
         List<Router> routerActive = routerService.findAllRouterActive();
         List<Router> routerUnActive = routerService.findAllRouterUnActive();
         model.addAttribute("routerActive",routerActive);
         model.addAttribute("routerUnActive",routerUnActive);
+        model.addAttribute("listMenu",menuService.getListMenuNoParent());
+        model.addAttribute("mapMenu",menuService.getMapMenuParent());
         return "Router";
     }
 

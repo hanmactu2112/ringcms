@@ -1,5 +1,6 @@
 package com.ringme.cms.controller;
 
+import com.ringme.cms.service.MenuService;
 import com.ringme.cms.service.RoleRouterService;
 import com.ringme.cms.service.RoleService;
 import com.ringme.cms.service.RouterService;
@@ -27,6 +28,8 @@ public class RouterRoleController {
     RouterService routerService;
     @Autowired
     RoleService roleService;
+    @Autowired
+    MenuService menuService;
 
     @GetMapping("/role/view/{id}")
     public String addRouterToRole(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes){
@@ -42,6 +45,8 @@ public class RouterRoleController {
                  routers = routerService.findAllRouterActive();
             }
             model.addAttribute("role",role.get());
+            model.addAttribute("listMenu",menuService.getListMenuNoParent());
+            model.addAttribute("mapMenu",menuService.getMapMenuParent());
             model.addAttribute("routers",routers);
             model.addAttribute("routerRoles",routerRoles);
             return "role-router";

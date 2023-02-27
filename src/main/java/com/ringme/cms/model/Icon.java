@@ -1,23 +1,23 @@
 package com.ringme.cms.model;
 
-import lombok.*;
+
+import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@ToString
-@AllArgsConstructor
 @Entity
+@Data
+@Table(name = "icon")
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "mission")
-public class Mission extends EntityBase implements Serializable {
+public class Icon implements Serializable {
     private static final long serialVersionUID = -297553281792804396L;
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+    @Column
     private String name;
+    @Column
+    private String displayName;
 }

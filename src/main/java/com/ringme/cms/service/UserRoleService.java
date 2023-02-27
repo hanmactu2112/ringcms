@@ -10,4 +10,8 @@ public interface UserRoleService {
     void addUserRole(UserRole userRole);
 
     List<UserRole> findAllUserRoleByIdUser(Long id);
+
+    void saveAllUserRole(List<UserRole> userRoles) throws Exception;
+
+    void deleteUserRoleById(List<Long> ids) throws Exception;
 }
