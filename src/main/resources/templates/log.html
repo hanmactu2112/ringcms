@@ -12,11 +12,11 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
             rel="stylesheet">
+    <!-- Google Web Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-3IMwAE5uxPFX28+5RtJ5n5QV22Jmzxjcvg9V8Wj0SN+2wGyqmzyfcBnpLe8WJ3Iq3pSgTLJNfL+8WzpljYvH4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" />
-    <!-- Google Web Fonts -->
 
-    <title>Role</title>
+    <title>Log</title>
     <link rel="icon" type="image/x-icon" th:href="@{/images/logo-vnpost.png}" >
 </head>
 
@@ -33,10 +33,7 @@
                 <div class="router">
                     <div class="router_inner">
                         <div class="router_title">
-                            Menu
-                        </div>
-                        <div class="add-role">
-                            <button onclick="location.href='/menu/create';">ADD</button>
+                            Log
                         </div>
                         <div class="table_role">
                             <div class="alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
@@ -45,36 +42,25 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Router</th>
-                                    <th>Order</th>
-                                    <th>parentName</th>
-                                    <th></th>
+                                    <th>Account id</th>
+                                    <th>Account Name</th>
+                                    <th>Action</th>
+                                    <th>Method Name</th>
+                                    <th>Object Id</th>
+                                    <th>Object name</th>
+                                    <th>Time</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each = "menu,item:${menus}">
+                                <tr th:each = "log,item:${logs}">
                                     <td th:text="${item.index + 1}" th:if="${item.index + 1}">1</td>
-                                    <td th:text="${menu.name}?${menu.name}:'(Not set)'" >John</td>
-                                    <td th:text="${menu.router.router_link}?:'(Not set)'">ABC123</td>
-                                    <td th:text="${menu.order_num}?:'Not set'">A description of John</td>
-                                    <td th:text="${menu.parentName}?${menu.parentName}:'Not set'">A description of John</td>
-                                    <td><a th:attr="onclick=|delete1('${menu.id}')|">
-                                            <span class="material-symbols-outlined">
-                                                delete
-                                            </span>
-                                    </a>
-                                        <a th:href="@{'/menu/view/'+${menu.id}}">
-                                                <span class="material-symbols-outlined">
-                                                    visibility
-                                                    </span>
-                                        </a>
-                                        <a th:href="@{'/menu/update/'+${menu.id}}">
-                                                <span class="material-symbols-outlined">
-                                                    edit
-                                                    </span>
-                                        </a>
-                                    </td>
+                                    <td th:text="${log.accountId}?${log.accountId}:'(Not set)'" >John</td>
+                                    <td th:text="${log.accountName}?${log.accountName}:'(Not set)'" >John</td>
+                                    <td th:text="${log.action}?${log.action}:'(Not set)'" >John</td>
+                                    <td th:text="${log.methodName}?${log.methodName}:'(Not set)'" >John</td>
+                                    <td th:text="${log.objectId}?${log.objectId}:'(Not set)'" >John</td>
+                                    <td th:text="${log.methodName}?:'(Not set)'">ABC123</td>
+                                    <td th:text="${log.time}?:'Not set'">A description of John</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -94,13 +80,6 @@
 
 </div>
 <script>
-    function delete1(id){
-        var result = confirm("Bạn có thực sự muốn xóa không?");
-        if (result) {
-            //Logic to delete the item
-            window.location.href = `/menu/delete/${id}`;
-        }
-    }
     function linkpage(page){
       console.log(page);
       var urlPage = window.location.href;

@@ -41,7 +41,7 @@ public class DatabaseLogAspect {
 
         // get account information from security context
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String accountId = ((UserSecurity)authentication.getPrincipal()).getFullName();
+            String accountId = ((UserSecurity)authentication.getPrincipal()).getId().toString();
             String accountName = ((UserDetails) authentication.getPrincipal()).getUsername();
 
             // get method name and action (CRUD)

@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @ToString
 public class UserSecurity extends User {
-
+    private Long id;
     private String email;
 
     private String fullName;
@@ -32,6 +32,16 @@ public class UserSecurity extends User {
 
     public UserSecurity(String username, String password, Collection<? extends GrantedAuthority> authorities, String email, String fullName, String address, String phone, String userType, Long idProvince) {
         super(username, password, authorities);
+        this.email = email;
+        this.fullName = fullName;
+        this.address = address;
+        this.phone = phone;
+        this.userType = userType;
+        this.idProvince = idProvince;
+    }
+    public UserSecurity(Long id,String username, String password, Collection<? extends GrantedAuthority> authorities, String email, String fullName, String address, String phone, String userType, Long idProvince) {
+        super(username, password, authorities);
+        this.id = id;
         this.email = email;
         this.fullName = fullName;
         this.address = address;

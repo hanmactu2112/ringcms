@@ -41,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             Set<String> routerLink = roleRouterService.findAllRouterRoleByListRoleId(roleIds).stream()
                     .map(e->e.getRouter().getRouter_link()).collect(Collectors.toSet());
 //            UserSercurity userSercurity = UserSercurity.builder().;
-            UserSecurity useSercurity =  new UserSecurity(user.get().getUserName(),user.get().getPassword(),grandList, user.get().getEmail(),user.get().getFullName(),user.get().getAddress(),user.get().getPhone(),user.get().getUserType(),user.get().getIdProvince());
+            UserSecurity useSercurity =  new UserSecurity(user.get().getId(),user.get().getUserName(),user.get().getPassword(),grandList, user.get().getEmail(),user.get().getFullName(),user.get().getAddress(),user.get().getPhone(),user.get().getUserType(),user.get().getIdProvince());
             useSercurity.setRouter(routerLink);
             return useSercurity;
         }

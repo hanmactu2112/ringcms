@@ -59,7 +59,6 @@ public class MenuController {
         model.addAttribute("mapMenu",menuService.getMapMenuParent());
         model.addAttribute("routers", routers);
         model.addAttribute("icons", icons);
-        model.addAttribute("class","&#xf036;");
         return "add-menu";
     }
 
@@ -84,6 +83,10 @@ public class MenuController {
     @PostMapping("/menu/save")
     public String saveMenu(@Valid @ModelAttribute("menu") Menu menu, BindingResult bindingResult, Errors error, @RequestParam("router") Long routerId, @RequestParam("icon") Long iconId, RedirectAttributes redirectAttributes,Model model) {
         if (error.hasErrors()){
+            List<Router> routers = routerService.findAllRouterActive();
+            List<Icon> icons = iconRepository.findAll();
+            model.addAttribute("routers", routers);
+            model.addAttribute("icons", icons);
             model.addAttribute("listMenu",menuService.getListMenuNoParent());
             model.addAttribute("mapMenu",menuService.getMapMenuParent());
             return "add-menu";

@@ -21,11 +21,12 @@ public class Menu extends EntityBase implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column
-    @NotNull(message = "Not null")
+    @NotNull(message = "Name menu not null")
     private String name;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "router_id")
     private Router router;
+    @NotNull(message = "Order not null")
     private Integer order_num;
     @Column(name = "parent_name")
     private String parentName;
