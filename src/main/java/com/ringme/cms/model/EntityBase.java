@@ -7,8 +7,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
@@ -20,16 +18,13 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public abstract class EntityBase implements Serializable {
-
-
-
-    @Column(updatable = false)
     @CreatedDate
-    @Temporal(TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_date", nullable = false, updatable = false)
     private Date createdDate;
 
-    @Column
     @LastModifiedDate
-    @Temporal(TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modified_date")
     private Date modifiedDate;
 }
