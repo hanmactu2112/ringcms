@@ -4,10 +4,7 @@ import com.ringme.cms.model.Staff;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -17,11 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-//@SpringBootTest
-class CmsApplicationTests {
-
-
-    //	@BeforeTestClass
+public class TestReadFIle {
     public static MultipartFile getFileBeforeTest() {
         Path path = Paths.get("C:\\Users\\Admin\\Documents\\workspace-spring-tool-suite-4-4.8.0.RELEASE\\ringcms\\StaffTest.xlsx");
         String name = "StaffTest.xlsx";
@@ -52,26 +45,26 @@ class CmsApplicationTests {
                             row.getCell(3).getStringCellValue().equals("StaffName") &&
                             row.getCell(4).getStringCellValue().equals("Phone") &&
                             row.getCell(5).getStringCellValue().equals("sUserId")) {
-                        break;
+                        continue;
                     }
-                    if (!row.getCell(0).getStringCellValue().equals("") &&
-                            !row.getCell(1).getStringCellValue().equals("") &&
-                            !row.getCell(2).getStringCellValue().equals("") &&
-                            !row.getCell(3).getStringCellValue().equals("") &&
-                            !row.getCell(4).getStringCellValue().equals("") &&
-                            !row.getCell(5).getStringCellValue().equals("")) {
-                        Staff staff = new Staff();
-                        staff.setId(Long.valueOf(row.getCell(0).getStringCellValue()));
-                        staff.setImage(row.getCell(1).getStringCellValue());
-                        staff.setUserName(row.getCell(2).getStringCellValue());
-                        staff.setStaffName((row.getCell(3).getStringCellValue()));
-                        staff.setPhone((row.getCell(4).getStringCellValue()));
-                        staff.setSUserId((row.getCell(5).getStringCellValue()));
+                }
+                if (!row.getCell(0).getStringCellValue().equals("") &&
+                        !row.getCell(1).getStringCellValue().equals("") &&
+                        !row.getCell(2).getStringCellValue().equals("") &&
+                        !row.getCell(3).getStringCellValue().equals("") &&
+                        !row.getCell(4).getStringCellValue().equals("") &&
+                        !row.getCell(5).getStringCellValue().equals("")) {
+                    Staff staff = new Staff();
+                    staff.setId(Long.valueOf(row.getCell(0).getStringCellValue()));
+                    staff.setImage(row.getCell(1).getStringCellValue());
+                    staff.setUserName(row.getCell(2).getStringCellValue());
+                    staff.setStaffName((row.getCell(3).getStringCellValue()));
+                    staff.setPhone((row.getCell(4).getStringCellValue()));
+                    staff.setSUserId((row.getCell(5).getStringCellValue()));
 
-                        staffList.add(staff);
-                    } else {
-                        return staffList;
-                    }
+                    staffList.add(staff);
+                } else {
+                    return staffList;
                 }
                 rowIndex++;
             }
@@ -85,5 +78,4 @@ class CmsApplicationTests {
     public static void main(String[] args) throws IOException {
         System.out.println(readFileExcel(getFileBeforeTest()));
     }
-
 }
