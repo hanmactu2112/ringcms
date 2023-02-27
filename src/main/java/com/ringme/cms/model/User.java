@@ -5,6 +5,7 @@ import com.ringme.cms.annotation.Name;
 import com.ringme.cms.annotation.Password;
 import com.ringme.cms.annotation.Phone;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @ToString
 @AllArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "user")
 public class User extends EntityBase implements Serializable {
     private static final long serialVersionUID = -297553281792804396L;

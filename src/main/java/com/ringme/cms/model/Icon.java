@@ -2,6 +2,7 @@ package com.ringme.cms.model;
 
 
 import lombok.Data;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 @Entity
 @Data
 @Table(name = "icon")
+@EntityListeners(AuditingEntityListener.class)
 public class Icon implements Serializable {
     private static final long serialVersionUID = -297553281792804396L;
     @Id

@@ -1,6 +1,7 @@
 package com.ringme.cms.model;
 
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.Collection;
 @ToString
 @AllArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "queue")
 public class Queue extends EntityBase implements Serializable {
     private static final long serialVersionUID = -297553281792804396L;

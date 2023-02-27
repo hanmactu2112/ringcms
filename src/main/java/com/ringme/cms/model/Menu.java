@@ -1,6 +1,7 @@
 package com.ringme.cms.model;
 
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @ToString
 @AllArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "menu")
 public class Menu extends EntityBase implements Serializable {
     private static final long serialVersionUID = -297553281792804396L;
