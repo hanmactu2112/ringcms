@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RouterRoleRepository extends JpaRepository<RouterRole,Long> {
@@ -15,4 +16,16 @@ public interface RouterRoleRepository extends JpaRepository<RouterRole,Long> {
     List<RouterRole> findAllRouterRoleByListRoleId(List<Long> roleIds);
 //    @Query(value = "SELECT * from router_role rr  inner join router r on r.id = rr.router_id where rr.role_id =?1",nativeQuery = true)
 //    List<RouterRole> findAllRouterByIdRole(Long roleIds);
+
+    @Override
+    List<RouterRole> findAll();
+
+    @Override
+    <S extends RouterRole> S save(S entity);
+
+    @Override
+    Optional<RouterRole> findById(Long aLong);
+
+    @Override
+    void deleteById(Long aLong);
 }

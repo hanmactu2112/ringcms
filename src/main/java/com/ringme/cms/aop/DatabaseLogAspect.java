@@ -1,6 +1,7 @@
 package com.ringme.cms.aop;
 
 import com.ringme.cms.dto.UserSecurity;
+import com.ringme.cms.model.EntityBase;
 import com.ringme.cms.model.Log;
 import com.ringme.cms.logrepository.LogRepository;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -32,10 +33,13 @@ public class DatabaseLogAspect {
         // get object ID if available
         Object[] args = joinPoint.getArgs();
         Long objectId = null;
+        String objectName = "";
         for (Object arg : args) {
             if (arg instanceof Long) {
                 objectId = (Long) arg;
                 break;
+            } else if (arg instanceof EntityBase) {
+                objectName = arg.getClass().getSimpleName();
             }
         }
 
@@ -53,8 +57,14 @@ public class DatabaseLogAspect {
                 action = "DELETE";
             }
             // get object name from repository interface name
+            String repositoryName1 = joinPoint.getSignature().getName();
             String repositoryName = joinPoint.getSignature().getDeclaringTypeName();
-            String objectName = repositoryName.substring(repositoryName.lastIndexOf(".") + 1, repositoryName.indexOf("Repository"));
+            System.err.println("repositoryName1: "+repositoryName1);
+            System.err.println("repositoryName: "+repositoryName);
+            if (objectName.equals("")) {
+                objectName = repositoryName.substring(repositoryName.lastIndexOf(".") + 1, repositoryName.indexOf("Repository"));
+
+            }
 
             // invoke method and measure execution time
             long startTime = System.currentTimeMillis();

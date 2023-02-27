@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LogRepository extends JpaRepository<Log,Long> {
-    @Query(value = "SELECT * from log l order by l.time",
-            countQuery = "SELECT Count(*) from log l order by l.time",nativeQuery = true)
+    @Query(value = "SELECT * from log l order by l.time DESC",
+            countQuery = "SELECT Count(*) from log l order by l.time DESC",nativeQuery = true)
     Page<Log> findAllLogPage(Pageable pageable);
 }
