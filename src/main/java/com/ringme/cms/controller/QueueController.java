@@ -1,14 +1,12 @@
 package com.ringme.cms.controller;
 
-import com.ringme.cms.model.Department;
-import com.ringme.cms.model.Mission;
-import com.ringme.cms.model.Queue;
-import com.ringme.cms.model.Staff;
+import com.ringme.cms.model.*;
 import com.ringme.cms.repository.DepartmentRepository;
 import com.ringme.cms.repository.MissionRepository;
 import com.ringme.cms.repository.QueueRepository;
 import com.ringme.cms.service.QueueService;
 import com.ringme.cms.service.StaffService;
+import com.ringme.cms.service.TimeQueueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.sql.Time;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +37,9 @@ public class QueueController {
 
     @Autowired
     StaffService staffService;
+
+    @Autowired
+    TimeQueueService timeQueueService;
 
     @GetMapping("/queue/index")
     public String findAllQueue(Model model) {
@@ -62,9 +64,11 @@ public class QueueController {
             List<Mission> missions = missionRepository.findAll();
             List<Department> departments = departmentRepository.findAll();
             List<Queue> queues = queueService.findAllQueue();
+            List<TimeQueue> timeQueues = timeQueueService.findAllTimeQueue();
             model.addAttribute("missions", missions);
             model.addAttribute("departments", departments);
             model.addAttribute("queues", queues);
+            model.addAttribute("timeQueues", timeQueues);
             model.addAttribute("queue", queue.get());
             return "add-queue";
         }
@@ -78,16 +82,23 @@ public class QueueController {
         List<Mission> missions = missionRepository.findAll();
         List<Department> departments = departmentRepository.findAll();
         List<Queue> queues = queueService.findAllQueue();
+        List<TimeQueue> timeQueues = timeQueueService.findAllTimeQueue();
         model.addAttribute("queue", queue);
         model.addAttribute("missions", missions);
         model.addAttribute("departments", departments);
         model.addAttribute("queues", queues);
+        model.addAttribute("timeQueues", timeQueues);
 
         return "add-queue";
     }
 
     @PostMapping("/queue/save")
-    public String saveQueue(@Valid @ModelAttribute("queue") Queue queue, Errors error, @RequestParam("department") Long departmentId,@RequestParam("nextQueue") Long nextQueueId,@RequestParam("mission") Long missionId, Model model, RedirectAttributes redirectAttributes) {
+    public String saveQueue(@Valid @ModelAttribute("queue") Queue queue, Errors error,
+                            @RequestParam("department") Long departmentId,
+                            @RequestParam("nextQueue") Long nextQueueId,
+                            @RequestParam("mission") Long missionId,
+                            @RequestParam("startTime") Long startTimeId, @RequestParam("endTime") Long endTimeId
+            , Model model, RedirectAttributes redirectAttributes) {
 //        if (error.hasErrors()) {
 //            return "add-queue";
 //        }
@@ -99,16 +110,27 @@ public class QueueController {
                 return "redirect:/queue/index";
             }
         }
+
         Optional<Department> department = departmentRepository.findById(departmentId);
         Optional<Mission> mission = missionRepository.findById(missionId);
         Optional<Queue> queue1 = queueService.findQueueById(nextQueueId);
-        if (!department.isPresent() || !mission.isPresent() || !queue1.isPresent()) {
+        Optional<TimeQueue> startTime = timeQueueService.findTimeQueueById(startTimeId);
+        Optional<TimeQueue> endTime = timeQueueService.findTimeQueueById(endTimeId);
+
+        if (!department.isPresent() || !mission.isPresent() || !queue1.isPresent() || !startTime.isPresent() || !endTime.isPresent()) {
             redirectAttributes.addFlashAttribute("error", "Error");
             return "redirect:/queue/index";
         }
+        if (startTime.get().getTime().after(endTime.get().getTime())) {
+            model.addAttribute("error", "Start Time must be BeFore End Time");
+            return getQueueById(queue.getId(), model, redirectAttributes);
+        }
+
         queue.setNextQueue(queue1.get());
         queue.setDepartment(department.get());
         queue.setMission(mission.get());
+        queue.setStartTime(startTime.get());
+        queue.setEndTime(endTime.get());
         queueService.saveQueue(queue);
         redirectAttributes.addFlashAttribute("success", "Success");
         return "redirect:/queue/index";

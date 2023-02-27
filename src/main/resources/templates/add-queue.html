@@ -38,7 +38,10 @@
                             Create menu
                         </div>
                         <form th:action = "@{/queue/save}" class="create-role" method="post" th:object = "${queue}">
-                            <!--              <label for="name">Name:</label>-->
+
+                            <div style="text-align: center; font-size: 20px; color: rgb(255, 0, 0); font-weight: bold">
+                                <span th:utext="${error}"></span>
+                            </div>
                             <input type="text" id="id" readonly hidden th:field =*{id} name="id">
                             <!--              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>-->
                             <label for="displayName">DisPlay Name:</label>
@@ -71,10 +74,14 @@
                             <input type="text" id="description" th:field =*{description} name="description" >
 
                             <label for="select">Start Time:</label>
-                            <input type="time" id="startTime" th:field =*{startTime} name="startTime" >
+                            <select class="form__select"  name="startTime" id="select">
+                                <option th:each = "item,istat : ${timeQueues}" th:selected = "${queue.id}?${queue.startTime.id}==${item.id}:'false'" th:value="${item.id}" th:text = "${item.time}">Supervision</option>
+                            </select>
 
                             <label for="select">End Time:</label>
-                            <input type="time" id="endTime" th:field =*{endTime} name="endTime" >
+                            <select class="form__select"  name="endTime" id="select">
+                                <option th:each = "item,istat : ${timeQueues}" th:selected = "${queue.id}?${queue.endTime.id}==${item.id}:'false'" th:value="${item.id}" th:text = "${item.time}">Supervision</option>
+                            </select>
 
                             <button type="submit">Save Queue</button>
                         </form>
