@@ -42,8 +42,12 @@
                             <button onclick="location.href='/queue/create';">ADD</button>
                         </div>
                         <div class="table_role">
-                            <div class="alert-primary" role="alert" th:text="${success1}" th:if="${success1}"></div>
-                            <div class="alert-danger" role="alert" th:text="${error1}" th:if="${error1}"></div>
+                            <div class="alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+<!--                            <div class="alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>-->
+
+                            <div style="text-align: center; font-size: 20px; color: rgb(255, 0, 0); font-weight: bold">
+                                <span th:utext="${error}"></span>
+                            </div>
 
                             <table class="my-table">
                                 <thead>

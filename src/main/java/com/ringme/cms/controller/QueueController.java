@@ -99,9 +99,9 @@ public class QueueController {
                             @RequestParam("mission") Long missionId,
                             @RequestParam("startTime") Long startTimeId, @RequestParam("endTime") Long endTimeId
             , Model model, RedirectAttributes redirectAttributes) {
-//        if (error.hasErrors()) {
-//            return "add-queue";
-//        }
+        if (error.hasErrors()) {
+            return "add-queue";
+        }
 
         if (queue.getId() != null) {
             Optional<Queue> queuePresent = queueService.findQueueById(queue.getId());
@@ -137,17 +137,17 @@ public class QueueController {
     }
 
     @GetMapping("/queue/delete/{id}")
-    public String deleteQueue(@PathVariable Long id, Model model) {
+    public String deleteQueue(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Queue> queue = queueService.findQueueById(id);
         List<Queue> queues = queueRepository.findAllByNextQueueId(id);
         if (queue.isPresent()) {
             List<Staff> staffList = staffService.listStaffHaveQueue(queue.get());
             if (staffList.isEmpty() && queues.isEmpty()) {
                 queueService.deleteQueueById(id);
-                model.addAttribute("success1", "success1");
+                redirectAttributes.addFlashAttribute("success", "Delete success");
             }
         } else {
-            model.addAttribute("error1", "Delete Queue Error");
+            redirectAttributes.addFlashAttribute("error", "Delete Queue Error");
         }
         return "redirect:/queue/index";
     }
