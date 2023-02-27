@@ -1,17 +1,19 @@
 package com.ringme.cms.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.Collection;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+//@ToString
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -38,11 +40,20 @@ public class Queue extends EntityBase implements Serializable {
     @Column(name = "type_queue")
     private String typeQueue;
     private String description;
-    @Column(name = "start_time")
-    private Time startTime;
-    @Column(name = "end_time")
-    private Time endTime;
+
+    @ManyToOne
+    @JoinColumn(name = "start_time")
+    private TimeQueue startTime;
+
+    @ManyToOne
+    @JoinColumn(name = "end_time")
+    private TimeQueue endTime;
+
     private String image;
     @OneToMany(mappedBy="queue",fetch = FetchType.EAGER)
     private Collection<Staff> staff;
+    @Column(name = "province")
+    private String province;
+    @Column(name = "status")
+    private boolean status;
 }

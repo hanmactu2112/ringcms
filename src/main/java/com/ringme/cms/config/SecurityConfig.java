@@ -95,6 +95,7 @@ public class SecurityConfig  {
     public CustomFilter customFilter() {
         return new CustomFilter();
     }
+
     @Bean
     public CaptchaFilter captchaFilter() {
         return new CaptchaFilter();

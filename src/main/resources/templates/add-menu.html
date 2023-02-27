@@ -38,6 +38,9 @@
               Create menu
             </div>
             <form th:action = "@{/menu/save}" class="create-role" method="post" th:object = "${menu}">
+
+
+
               <!--              <label for="name">Name:</label>-->
               <input type="text" id="id" readonly hidden th:field =*{id} name="id">
               <!--              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>-->

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public class CustomFilter extends OncePerRequestFilter {
                     &&!request.getRequestURI().equals("/index")
                     &&!request.getRequestURI().equals("/logout")
                     &&!request.getRequestURI().equals("/captcha.jpg")
-                && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSecurity){
+                    && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSecurity){
                 System.err.println("Custom filter have user: "+request.getRequestURI());
                 UserSecurity userDetails = (UserSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 Set<String> router = userDetails.getRouter();
