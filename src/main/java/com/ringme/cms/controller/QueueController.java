@@ -121,8 +121,12 @@ public class QueueController {
             redirectAttributes.addFlashAttribute("error", "Error");
             return "redirect:/queue/index";
         }
-        if (startTime.get().getTime().after(endTime.get().getTime())) {
+        if ((startTime.get().getTime()).compareTo(endTime.get().getTime()) >= 0) {
             model.addAttribute("error", "Start Time must be BeFore End Time");
+            if(queue.getId()==null){
+                model.addAttribute("error","Start Time must be BeFore End Time");
+                return createQueue(model);
+            }
             return getQueueById(queue.getId(), model, redirectAttributes);
         }
 
