@@ -12,7 +12,7 @@ import java.io.Serializable;
 @ToString
 @AllArgsConstructor
 @Entity
-@Table(name = "mission")
+@Table(name = "department")
 @EntityListeners(AuditingEntityListener.class)
 public class Department extends EntityBase implements Serializable {
     private static final long serialVersionUID = -297553281792804396L;
@@ -27,6 +27,4 @@ public class Department extends EntityBase implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-
-
 }
