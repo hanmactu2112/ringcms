@@ -45,13 +45,15 @@
               <input type="text" id="id" readonly hidden th:field =*{id} name="id">
               <!--              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>-->
               <label for="name">Name:</label>
-              <input type="text" id="name" th:field =*{name} name="name">
-              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" required></p>
+              <input type="text" id="name" th:field =*{name} name="name"required>
+              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" ></p>
 
               <label for="parentName">Parent:</label>
               <input type="text" id="parentName" th:field =*{parentName} name="parentName" >
               <label for="order">Order:</label>
-              <input type="text" id="order" th:field =*{order_num} name="order_num" >
+              <input type="number" id="order" th:field =*{order_num} name="order_num" required>
+              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('order_num')}" th:errors="*{order_num}" ></p>
+
               <label for="select">Router:</label>
               <select class="form__select"  name="router" id="select">
                 <option th:each = "item,istat : ${routers}" th:selected = "${menu.id}?${menu.router.id}==${item.id}:'false'" th:value="${item.id}" th:text = "${item.router_link}">Supervision</option>
@@ -71,7 +73,23 @@
   </div>
 </div>
 <script>
+  function myFunction() {
+            console.log(document.getElementById("sideBar").style.width);
+            if (document.getElementById("sideBar").style.width === "0px") {
+                document.getElementById("sideBar").style.width = "10%";
+                document.getElementById("logo").style.width = "10%";
+                document.getElementById("bgbody").style.width = "90%";
+                document.getElementById("navbar_main").style.width = "90%";
 
+            }
+            else {
+                document.getElementById("sideBar").style.width = 0;
+                document.getElementById("logo").style.width = 0;
+                document.getElementById("bgbody").style.width = "100%";
+                document.getElementById("navbar_main").style.width = "100%";
+            }
+
+        }
 </script>
 </body>
 

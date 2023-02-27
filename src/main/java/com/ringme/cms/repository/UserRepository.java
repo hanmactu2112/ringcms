@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -28,4 +29,22 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Page<User> findAllUserBy(String username, String type, Pageable pageable);
     @Query(value = "Select * from user u where u.id =?1 and u.user_name like %?2% and u.user_type =?3",countQuery = "Select count(*) from user u where u.id =?1 and u.user_name like %?2% and u.user_type =?3",nativeQuery = true)
     Page<User> findAllUserBy(Long id, String username, String type, Pageable pageable);
+
+    @Override
+    List<User> findAll();
+
+    @Override
+    List<User> findAllById(Iterable<Long> longs);
+
+    @Override
+    <S extends User> S save(S entity);
+
+    @Override
+    void deleteById(Long aLong);
+
+    @Override
+    void delete(User entity);
+
+    @Override
+    void deleteAllById(Iterable<? extends Long> longs);
 }

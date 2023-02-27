@@ -3,11 +3,13 @@ package com.ringme.cms.repository;
 import com.ringme.cms.model.Queue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface QueueRepository extends JpaRepository<Queue, Long> {
@@ -61,4 +63,22 @@ public interface QueueRepository extends JpaRepository<Queue, Long> {
 
     @Query(name = "Select * from queue q where q.next_queue_id =: nextQueueId", nativeQuery = true)
     List<Queue> findAllByNextQueueId(Long nextQueueId);
+
+    @Override
+    List<Queue> findAll();
+
+    @Override
+    List<Queue> findAll(Sort sort);
+
+    @Override
+    List<Queue> findAllById(Iterable<Long> longs);
+
+    @Override
+    <S extends Queue> S save(S entity);
+
+    @Override
+    Optional<Queue> findById(Long aLong);
+
+    @Override
+    void deleteAllById(Iterable<? extends Long> longs);
 }

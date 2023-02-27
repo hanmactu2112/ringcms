@@ -153,6 +153,23 @@
       var newUrl = utlBase + urlParram;
       window.location.href = newUrl;
     }
+    function myFunction() {
+            console.log(document.getElementById("sideBar").style.width);
+            if (document.getElementById("sideBar").style.width === "0px") {
+                document.getElementById("sideBar").style.width = "10%";
+                document.getElementById("logo").style.width = "10%";
+                document.getElementById("bgbody").style.width = "90%";
+                document.getElementById("navbar_main").style.width = "90%";
+
+            }
+            else {
+                document.getElementById("sideBar").style.width = 0;
+                document.getElementById("logo").style.width = 0;
+                document.getElementById("bgbody").style.width = "100%";
+                document.getElementById("navbar_main").style.width = "100%";
+            }
+
+        }
 </script>
 </body>
 

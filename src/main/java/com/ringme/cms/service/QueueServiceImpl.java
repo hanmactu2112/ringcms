@@ -89,6 +89,8 @@ public class QueueServiceImpl implements QueueService {
         if (departmentId != null && type == null && missionId == null && province != null) {
 //            return queueRepository.findAllQueueByDepartmentAndTypeQueue(departmentId,type,pageable);
         }
+
+        //four
         if (departmentId != null && type == null && missionId == null && province != null) {
 //            return queueRepository.findAllQueueByDepartmentAndTypeQueue(departmentId,type,pageable);
         }
