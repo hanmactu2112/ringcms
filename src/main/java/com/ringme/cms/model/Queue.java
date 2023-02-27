@@ -11,7 +11,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+//@ToString
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -45,4 +45,8 @@ public class Queue extends EntityBase implements Serializable {
     private String image;
     @OneToMany(mappedBy="queue",fetch = FetchType.EAGER)
     private Collection<Staff> staff;
+    @Column(name = "province")
+    private String province;
+    @Column(name = "status")
+    private boolean status;
 }
