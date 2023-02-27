@@ -57,6 +57,8 @@ public interface QueueRepository extends JpaRepository<Queue, Long> {
     @Query(name = "select * from queue q where q.department_id =?1 and q.type_queue =?2 and q.mission_id =?3 and q.province like %?4%  ", countQuery = "Select count(*) from queue q q.department_id =?1 and q.type_queue =?2 and q.mission_id =?3 and q.province like %?4% ", nativeQuery = true)
     Page<Queue> findAllQueueByDepartmentAndTypeQueueAndMissionAndProvince(Long departmentId, String typeQueue, Long missionId, String province, Pageable pageable);
 
+
+
     @Query(name = "Select * from queue q where q.next_queue_id =: nextQueueId", nativeQuery = true)
     List<Queue> findAllByNextQueueId(Long nextQueueId);
 }
