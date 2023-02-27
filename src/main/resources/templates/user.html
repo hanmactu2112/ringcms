@@ -76,26 +76,26 @@
                 <tbody>
                 <tr th:each = "user,item:${users}">
                   <td th:text="${user.id}">1</td>
-                  <td th:text="${user.userName}" >John</td>
-                  <td th:text="${user.userType}" >John</td>
-                  <td th:text="${user.phone}" >John</td>
-                  <td th:text="${user.email}" >John</td>
+                  <td th:text="${user.userName}">John</td>
+                  <td th:text="${user.userType}">John</td>
+                  <td th:text="${user.phone}">John</td>
+                  <td th:text="${user.email}">John</td>
                   <td th:text="${user.active}">ABC123</td>
                   <td th:text="${user.createdDate}">A description of John</td>
-                  <td><a th:attr="onclick=|delete('${user.id}')|">
-                                            <span class="material-symbols-outlined">
-                                                delete
-                                            </span>
+                  <td><a th:attr="onclick=|delete1('${user.id}')|">
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
                   </a>
                     <a th:href="@{'/user/view/'+${user.id}}">
-                                                <span class="material-symbols-outlined">
-                                                    visibility
-                                                    </span>
+                        <span class="material-symbols-outlined">
+                            visibility
+                        </span>
                     </a>
                     <a th:href="@{'/user/update/'+${user.id}}">
-                                                <span class="material-symbols-outlined">
-                                                    edit
-                                                    </span>
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
                     </a>
                   </td>
                 </tr>
@@ -114,15 +114,42 @@
       </div>
     </div>
   </div>
-
 </div>
 <script>
-    function delete(id) {
+    function delete1(id) {
         var result = confirm("Bạn có thực sự muốn xóa không?");
         if (result) {
             //Logic to delete the item
-            window.location.href = `/role/delete/${id}`
+            window.location.href = `/user/delete/${id}`
         }
+    }
+    function linkpage(page){
+      console.log(page);
+      var urlPage = window.location.href;
+      var utlBase = '';
+      var urlParram = '';
+      let start = 0;
+      for(let i = 0; i < urlPage.length-1; i++){
+        if(urlPage.charAt(i) =='?'){
+          start = i;
+          break;
+        }
+      }
+      if(start > 0){
+        utlBase = urlPage.substring(0,start);
+        urlParram = urlPage.substring(start,urlPage.length);
+      }else {
+        utlBase = urlPage;
+      }
+      console.log(page);
+      if(utlBase.charAt(utlBase.length-2) =='/' && (utlBase.charAt(utlBase.length-1) >= '0' && utlBase.charAt(utlBase.length-1) <= '9')){
+        utlBase = utlBase.substring(0, utlBase.length-1)+ page;
+      }
+      else{
+        utlBase += '/'+ page;
+      }
+      var newUrl = utlBase + urlParram;
+      window.location.href = newUrl;
     }
 </script>
 </body>

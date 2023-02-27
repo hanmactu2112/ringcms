@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RouterServiceImpl implements RouterService{
@@ -40,5 +41,10 @@ public class RouterServiceImpl implements RouterService{
     @Override
     public List<Router> findAllRouterNotInRole(List<Long> roleIds) {
         return routerRepository.findAllRouterNotInRole(roleIds);
+    }
+
+    @Override
+    public Optional<Router> findRouterById(Long id) {
+        return routerRepository.findById(id);
     }
 }

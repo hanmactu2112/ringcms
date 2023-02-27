@@ -27,7 +27,6 @@ public class User extends EntityBase implements Serializable {
     @Column(name = "user_name")
     @NotNull(message = "Not empty")
     private String userName;
-    @Password
     @Column(name = "password")
     private String password;
     @Name

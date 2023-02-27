@@ -36,12 +36,7 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public void saveRole(Role role) throws Exception {
         try{
-            java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
             role.setRoleName("ROLE_"+role.getRoleName().toUpperCase());
-            if (role.getId()!=null) {
-                role.setModifiedDate(date);
-            }
-            else role.setCreatedDate(date);
             roleRepository.save(role);
         }catch (Exception e) {
             throw new Exception();
@@ -60,6 +55,8 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public List<Role> findAllRoleNotInListIdRole(List<Long> idRole) {
-        return null;
+        return roleRepository.findAllRoleNotInListIdRole(idRole);
     }
+
+
 }

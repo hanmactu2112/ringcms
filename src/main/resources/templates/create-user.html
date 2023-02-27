@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" th:href="@{/styles/styles.css}" />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+          rel="stylesheet">
+  <!-- Google Web Fonts -->
+
+  <title>User</title>
+  <link rel="icon" type="image/x-icon" th:href="@{/images/logo-vnpost.png}" >
+</head>
+
+<body>
+<div class="wraper">
+  <div th:replace="/header :: header"></div>
+  <div class="content_body">
+    <div class="menu" id="sideBar" style="transition-duration: 400ms;">
+      <div class="menu-inner" th:replace="/menu :: menu">
+      </div>
+    </div>
+    <div class="bg_body" id="bgbody">
+      <div class="body_inner">
+        <div class="router">
+          <div class="create-role-dv">
+            <div class="title-create-role">
+              Create User
+            </div>
+            <form th:action = "@{/user/save}" class="create-role" method="post" th:object = "${user}">
+              <!--              <label for="name">Name:</label>-->
+              <input type="text" id="name" readonly hidden th:field =*{id} name="id">
+              <!--              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>-->
+              <label for="userName">Username:</label>
+              <input type="text" id="userName" th:field =*{userName} name="userName">
+              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" required></p>
+
+              <label for="userName">Password:</label>
+              <input type="password" id="password" th:field =*{password} name="password" >
+              <p style="color:red;font-size:12px;" th:if="${errorpass}" th:text="${errorpass}"></p>
+
+              <label for="confirm_password">Retypepassword:</label>
+              <input type="password" id="confirm_password" name="confirmpassword" >
+              <p style="color:red;font-size:12px;" th:if="${errorpass}" th:text="${errorpass}"></p>
+
+              <label for="fullname">Full Name:</label>
+              <input type="text" id="fullname" th:field =*{fullName} name="fullName">
+              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" required></p>
+
+              <label for="email">Emails:</label>
+              <input type="text" id="email" th:field =*{email} name="email">
+              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" required></p>
+
+              <label for="address">Address:</label>
+              <input type="text" id="address" th:field =*{address} name="address" required>
+
+              <label for="phone">Phone:</label>
+              <input type="text" id="phone" th:field =*{phone} name="phone">
+              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+
+              <label for="select">User type:</label>
+              <select class="form__select" th:field ="*{userType}" name="type" id="select">
+                <option th:selected = "${user.id}?${user.userType}=='supervision':'false'" value="supervision">Supervision</option>
+                <option th:selected = "${user.id}?${user.userType}=='agent':'false'" value="agent">Agent</option>
+              </select>
+              <label>Active</label>
+              <input type="checkbox" name="active" th:checked="*{active}" value="1" th:field="*{active}">
+              <button type="submit">Create User</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var password = document.getElementById("password")
+  , confirm_password = document.getElementById("confirm_password");
+
+function validatePassword(){
+  if(password.value != confirm_password.value) {
+    confirm_password.setCustomValidity("Passwords Don't Match");
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+}
+
+password.onchange = validatePassword;
+confirm_password.onkeyup = validatePassword;
+</script>
+</body>
+
+</html>

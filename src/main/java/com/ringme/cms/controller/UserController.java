@@ -4,25 +4,88 @@ import com.ringme.cms.model.User;
 import com.ringme.cms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class UserController {
 
     @Autowired
     UserService userService;
-
-
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @GetMapping("/user/index")
     public String getAllUser(Model model){
-
         return getAllUserPage(1,"0","","",model);
     }
-
+    @GetMapping("/user/create")
+    public String createUser(Model model){
+        User user = new User();
+        model.addAttribute("user",user);
+        return "create-user";
+    }
+    @PostMapping("/user/save")
+    public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Errors error, Model model,RedirectAttributes redirectAttributes){
+        if (error.hasErrors()){
+            return "create-user";
+        }
+        else {
+            if (user.getId()!=null){
+                Optional<User> userOptional = userService.findByIdUser(user.getId());
+                if (!userOptional.isPresent()){
+                    model.addAttribute("error","User not present");
+                    return getAllUser(model);
+                }
+                else {
+                    if (user.getPassword().trim().equals("")){
+                        user.setPassword(userOptional.get().getPassword());
+                    }
+                    else {
+                        if (user.getPassword().matches("^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[^a-zA-Z]).{8,40}$")&&user.getPassword().matches("\\S+")){
+                            user.setPassword(passwordEncoder.encode(user.getPassword()));
+                        }
+                        else {
+                            model.addAttribute("errorpass","Password is not in the correct format");
+                            return updateUser(user.getId(), model,redirectAttributes);
+                        }
+                    }
+                }
+            }
+            else {
+                if (user.getPassword().matches("^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[^a-zA-Z]).{8,40}$")&&user.getPassword().matches("\\S+")){
+                    user.setPassword(passwordEncoder.encode(user.getPassword()));
+                }
+                else {
+                    model.addAttribute("errorpass","Password is not in the correct format");
+                    return createUser(model);
+                }
+            }
+            userService.saveUser(user);
+            model.addAttribute("success","Success");
+            return getAllUser(model);
+        }
+    }
+    @GetMapping("/user/update/{id}")
+    public String updateUser(@PathVariable("id")Long id, Model model, RedirectAttributes redirectAttributes){
+        Optional<User> user = userService.findByIdUser(id);
+        if (user.isPresent()){
+            user.get().setPassword("");
+            model.addAttribute("user",user.get());
+            return "create-user";
+        }
+        else {
+            redirectAttributes.addFlashAttribute("error","User not present");
+            return "redirect:/user/index/1";
+        }
+    }
     @GetMapping("/user/index/{page}")
     public String getAllUserPage(@PathVariable("page")int page, @RequestParam(value = "id")String id
             , @RequestParam("username")String username, @RequestParam("type")String type, Model model){

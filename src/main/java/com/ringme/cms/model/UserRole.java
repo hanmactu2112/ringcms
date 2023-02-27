@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -25,4 +26,10 @@ public class UserRole extends EntityBase implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
+
+    public UserRole(User user, Role role) {
+        super();
+        this.user = user;
+        this.role = role;
+    }
 }

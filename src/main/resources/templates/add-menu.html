@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" th:href="@{/styles/styles.css}" />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-3IMwAE5uxPFX28+5RtJ5n5QV22Jmzxjcvg9V8Wj0SN+2wGyqmzyfcBnpLe8WJ3Iq3pSgTLJNfL+8WzpljYvH4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" />
+
+
+  <!-- Google Web Fonts -->
+
+  <title>menu</title>
+  <link rel="icon" type="image/x-icon" th:href="@{/images/logo-vnpost.png}" >
+</head>
+
+<body>
+<div class="wraper">
+  <div th:replace="/header :: header"></div>
+  <div class="content_body">
+    <div class="menu" id="sideBar" style="transition-duration: 400ms;">
+      <div class="menu-inner" th:replace="/menu :: menu">
+      </div>
+    </div>
+    <div class="bg_body" id="bgbody">
+      <div class="body_inner">
+        <div class="router">
+          <div class="create-role-dv">
+            <div class="title-create-role">
+              Create menu
+            </div>
+            <form th:action = "@{/menu/save}" class="create-role" method="post" th:object = "${menu}">
+              <!--              <label for="name">Name:</label>-->
+              <input type="text" id="id" readonly hidden th:field =*{id} name="id">
+              <!--              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>-->
+              <label for="name">Name:</label>
+              <input type="text" id="name" th:field =*{name} name="name">
+              <p style="color:red;font-size:12px;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" required></p>
+
+              <label for="parentName">Parent:</label>
+              <input type="text" id="parentName" th:field =*{parentName} name="parentName" >
+              <label for="order">Order:</label>
+              <input type="text" id="order" th:field =*{order_num} name="order_num" >
+              <label for="select">Router:</label>
+              <select class="form__select"  name="router" id="select">
+                <option th:each = "item,istat : ${routers}" th:selected = "${menu.id}?${menu.router.id}==${item.id}:'false'" th:value="${item.id}" th:text = "${item.router_link}">Supervision</option>
+              </select>
+              <label for="select">Icon:</label>
+              <select class="form__select1" name="icon" id="icon">
+                <option th:each = "item,istat : ${icons}" th:selected = "${menu.id}?${menu.icon.id}==${item.id}:'false'" th:value="${item.id}" >
+                  <th:block th:utext="${item.name}"/>&ensp;&ensp;<th:block th:utext="${item.displayName}"/>
+                  </option>
+              </select>
+              <button type="submit">Create menu</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+</script>
+</body>
+
+</html>

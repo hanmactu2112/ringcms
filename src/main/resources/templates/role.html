@@ -55,7 +55,7 @@
                   <td th:text="${role.roleName}?${role.roleName}:'(Not set)'" >John</td>
                   <td th:text="${role.data}?:'(Not set)'">ABC123</td>
                   <td th:text="${role.description}?:'Not set'">A description of John</td>
-                  <td><a th:attr="onclick=|delete('${role.id}')|">
+                  <td><a th:attr="onclick=|delete1('${role.id}')|">
                                             <span class="material-symbols-outlined">
                                                 delete
                                             </span>
@@ -90,12 +90,40 @@
 
 </div>
 <script>
-    function delete(id) {
+    function delete1(id){
         var result = confirm("Bạn có thực sự muốn xóa không?");
         if (result) {
             //Logic to delete the item
-            window.location.href = `/role/delete/${id}`
+            window.location.href = `/role/delete/${id}`;
         }
+    }
+    function linkpage(page){
+      console.log(page);
+      var urlPage = window.location.href;
+      var utlBase = '';
+      var urlParram = '';
+      let start = 0;
+      for(let i = 0; i < urlPage.length-1; i++){
+        if(urlPage.charAt(i) =='?'){
+          start = i;
+          break;
+        }
+      }
+      if(start > 0){
+        utlBase = urlPage.substring(0,start);
+        urlParram = urlPage.substring(start,urlPage.length);
+      }else {
+        utlBase = urlPage;
+      }
+      console.log(page);
+      if(utlBase.charAt(utlBase.length-2) =='/' && (utlBase.charAt(utlBase.length-1) >= '0' && utlBase.charAt(utlBase.length-1) <= '9')){
+        utlBase = utlBase.substring(0, utlBase.length-1)+ page;
+      }
+      else{
+        utlBase += '/'+ page;
+      }
+      var newUrl = utlBase + urlParram;
+      window.location.href = newUrl;
     }
 </script>
 </body>
