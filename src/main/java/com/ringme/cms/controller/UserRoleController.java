@@ -4,6 +4,7 @@ import com.ringme.cms.model.Role;
 import com.ringme.cms.model.User;
 import com.ringme.cms.model.UserRole;
 import com.ringme.cms.repository.RoleRepository;
+import com.ringme.cms.service.MenuService;
 import com.ringme.cms.service.RoleService;
 import com.ringme.cms.service.UserRoleService;
 import com.ringme.cms.service.UserService;
@@ -37,6 +38,8 @@ public class UserRoleController {
 
     @Autowired
     UserController userController;
+    @Autowired
+    MenuService menuService;
 
     @GetMapping("user/view/{id}")
     public String getUserRoleById(@PathVariable Long id, Model model, RedirectAttributes attributes){
@@ -54,6 +57,8 @@ public class UserRoleController {
             }
             model.addAttribute("user",user.get());
             model.addAttribute("user_roles",roles);
+            model.addAttribute("listMenu",menuService.getListMenuNoParent());
+            model.addAttribute("mapMenu",menuService.getMapMenuParent());
             return "user-role";
         }
         attributes.addFlashAttribute("error","User not found");
@@ -72,12 +77,18 @@ public class UserRoleController {
                 userRoleService.saveAllUserRole(userRoles);
             } catch (Exception e) {
                 model.addAttribute("error","Update error");
+                model.addAttribute("listMenu",menuService.getListMenuNoParent());
+                model.addAttribute("mapMenu",menuService.getMapMenuParent());
                 return getUserRoleById(id,model,redirectAttributes);
             }
             model.addAttribute("success","Update success");
+            model.addAttribute("listMenu",menuService.getListMenuNoParent());
+            model.addAttribute("mapMenu",menuService.getMapMenuParent());
             return getUserRoleById(id,model,redirectAttributes);
         }
         model.addAttribute("error","User not found");
+        model.addAttribute("listMenu",menuService.getListMenuNoParent());
+        model.addAttribute("mapMenu",menuService.getMapMenuParent());
         return getUserRoleById(id,model,redirectAttributes);
 
     }
@@ -87,15 +98,21 @@ public class UserRoleController {
         if(user.isPresent()){
             try {
                 userRoleService.deleteUserRoleById(userroles);
+                model.addAttribute("listMenu",menuService.getListMenuNoParent());
+                model.addAttribute("mapMenu",menuService.getMapMenuParent());
                 model.addAttribute("success","delete success");
                 return getUserRoleById(id,model,redirectAttributes);
             } catch (Exception e) {
+                model.addAttribute("listMenu",menuService.getListMenuNoParent());
+                model.addAttribute("mapMenu",menuService.getMapMenuParent());
                 model.addAttribute("error","delete error");
                 return getUserRoleById(id,model,redirectAttributes);
             }
         }
         else {
             model.addAttribute("error","User not found");
+            model.addAttribute("listMenu",menuService.getListMenuNoParent());
+            model.addAttribute("mapMenu",menuService.getMapMenuParent());
             return getUserRoleById(id,model,redirectAttributes);
         }
     }

@@ -830,7 +830,14 @@ li{
   .form__select1 option{
   font-family: 'FontAwesome', 'sans-serif';
   }
-
+    .dropdow_select a{
+        font-family: 'FontAwesome', 'sans-serif';
+        font-size: 15px;
+    }
+    .dropdow_item a{
+      font-family: 'FontAwesome', 'sans-serif';
+      font-size: 15px;
+  }
   .form__button {
     padding: 10px 20px;
     margin-left: 10px;

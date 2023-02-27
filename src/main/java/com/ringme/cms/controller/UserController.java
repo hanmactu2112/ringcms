@@ -1,6 +1,7 @@
 package com.ringme.cms.controller;
 
 import com.ringme.cms.model.User;
+import com.ringme.cms.service.MenuService;
 import com.ringme.cms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,9 @@ public class UserController {
     UserService userService;
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    MenuService menuService;
     @GetMapping("/user/index")
     public String getAllUser(Model model){
         return getAllUserPage(1,"0","","",model);
@@ -30,11 +34,15 @@ public class UserController {
     public String createUser(Model model){
         User user = new User();
         model.addAttribute("user",user);
+        model.addAttribute("listMenu",menuService.getListMenuNoParent());
+        model.addAttribute("mapMenu",menuService.getMapMenuParent());
         return "create-user";
     }
     @PostMapping("/user/save")
     public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Errors error, Model model,RedirectAttributes redirectAttributes){
         if (error.hasErrors()){
+            model.addAttribute("listMenu",menuService.getListMenuNoParent());
+            model.addAttribute("mapMenu",menuService.getMapMenuParent());
             return "create-user";
         }
         else {
@@ -53,6 +61,8 @@ public class UserController {
                             user.setPassword(passwordEncoder.encode(user.getPassword()));
                         }
                         else {
+                            model.addAttribute("listMenu",menuService.getListMenuNoParent());
+                            model.addAttribute("mapMenu",menuService.getMapMenuParent());
                             model.addAttribute("errorpass","Password is not in the correct format");
                             return updateUser(user.getId(), model,redirectAttributes);
                         }
@@ -64,11 +74,15 @@ public class UserController {
                     user.setPassword(passwordEncoder.encode(user.getPassword()));
                 }
                 else {
+                    model.addAttribute("listMenu",menuService.getListMenuNoParent());
+                    model.addAttribute("mapMenu",menuService.getMapMenuParent());
                     model.addAttribute("errorpass","Password is not in the correct format");
                     return createUser(model);
                 }
             }
             userService.saveUser(user);
+            model.addAttribute("listMenu",menuService.getListMenuNoParent());
+            model.addAttribute("mapMenu",menuService.getMapMenuParent());
             model.addAttribute("success","Success");
             return getAllUser(model);
         }
@@ -78,6 +92,8 @@ public class UserController {
         Optional<User> user = userService.findByIdUser(id);
         if (user.isPresent()){
             user.get().setPassword("");
+            model.addAttribute("listMenu",menuService.getListMenuNoParent());
+            model.addAttribute("mapMenu",menuService.getMapMenuParent());
             model.addAttribute("user",user.get());
             return "create-user";
         }
@@ -100,6 +116,8 @@ public class UserController {
             model.addAttribute("error","Id is number");
         }
         model.addAttribute("currentPage", page);
+        model.addAttribute("listMenu",menuService.getListMenuNoParent());
+        model.addAttribute("mapMenu",menuService.getMapMenuParent());
         model.addAttribute("totalPages", users.getTotalPages());
         model.addAttribute("totalItems", users.getTotalElements());
         model.addAttribute("users", users.toList());

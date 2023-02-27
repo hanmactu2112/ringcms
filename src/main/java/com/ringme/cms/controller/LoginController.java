@@ -1,6 +1,7 @@
 package com.ringme.cms.controller;
 
 import com.ringme.cms.dto.UserSecurity;
+import com.ringme.cms.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,8 @@ public class LoginController {
     private AntPathMatcher antPathMatcher;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    MenuService menuService;
 
     @GetMapping("/login")
     public String login(Model model, HttpServletRequest request){
@@ -55,8 +58,9 @@ public class LoginController {
         return "403";
     }
     @GetMapping("/index")
-    public String index(HttpServletRequest httpServletRequest){
-        System.out.println(httpServletRequest.getRequestURI());
+    public String index(HttpServletRequest httpServletRequest,Model model){
+        model.addAttribute("listMenu",menuService.getListMenuNoParent());
+        model.addAttribute("mapMenu",menuService.getMapMenuParent());
         return "index";
     }
 }

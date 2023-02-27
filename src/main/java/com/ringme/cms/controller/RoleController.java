@@ -1,5 +1,6 @@
 package com.ringme.cms.controller;
 
+import com.ringme.cms.service.MenuService;
 import com.ringme.cms.service.RoleService;
 import com.ringme.cms.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import java.util.Optional;
 public class RoleController {
     @Autowired
     RoleService roleService;
+    @Autowired
+    MenuService menuService;
     @GetMapping("/role/index")
     public String loadAllRole(Model model){
         return pageRole(1,model);
@@ -31,11 +34,15 @@ public class RoleController {
         model.addAttribute("totalPages", roles.getTotalPages());
         model.addAttribute("totalItems", roles.getTotalElements());
         model.addAttribute("roles",roles);
+        model.addAttribute("listMenu",menuService.getListMenuNoParent());
+        model.addAttribute("mapMenu",menuService.getMapMenuParent());
         return "role";
     }
     @GetMapping("/role/create")
     public String createRole(Model model){
         model.addAttribute("role",new Role());
+        model.addAttribute("listMenu",menuService.getListMenuNoParent());
+        model.addAttribute("mapMenu",menuService.getMapMenuParent());
         return "create-role";
     }
     @GetMapping("/role/update/{id}")
@@ -44,6 +51,8 @@ public class RoleController {
         if (role.isPresent()){
             role.get().setRoleName(role.get().getRoleName().split("ROLE_")[1]);
             model.addAttribute("role",role.get());
+            model.addAttribute("listMenu",menuService.getListMenuNoParent());
+            model.addAttribute("mapMenu",menuService.getMapMenuParent());
             return "create-role";
         }
         else {
@@ -53,8 +62,10 @@ public class RoleController {
 
     }
     @PostMapping("/role/update")
-    public String saveRole(@Valid @ModelAttribute("role")Role role, Errors error,  RedirectAttributes redirectAttributes){
+    public String saveRole(@Valid @ModelAttribute("role")Role role, Errors error,  RedirectAttributes redirectAttributes,Model model){
         if (error.hasErrors()){
+            model.addAttribute("listMenu",menuService.getListMenuNoParent());
+            model.addAttribute("mapMenu",menuService.getMapMenuParent());
             return "create-role";
         }
         else {
