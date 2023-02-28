@@ -1,19 +1,17 @@
 package com.ringme.cms.controller;
 
-import com.ringme.cms.excelhelper.ExcelReadFile;
-import com.ringme.cms.excelhelper.ExcelWriteFile;
+import com.ringme.cms.criteria.QueueSearchCriteria;
 import com.ringme.cms.model.*;
 import com.ringme.cms.model.Queue;
 import com.ringme.cms.repository.DepartmentRepository;
 import com.ringme.cms.repository.MissionRepository;
 import com.ringme.cms.repository.QueueRepository;
+import com.ringme.cms.repository.StaffRepository;
 import com.ringme.cms.service.MenuService;
 import com.ringme.cms.service.QueueService;
 import com.ringme.cms.service.StaffService;
 import com.ringme.cms.service.TimeQueueService;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Time;
 import java.util.*;
 
 @Controller
@@ -43,10 +37,16 @@ public class QueueController {
     QueueRepository queueRepository;
 
     @Autowired
+    QueueRepository queueRRepository;
+
+    @Autowired
     DepartmentRepository departmentRepository;
 
     @Autowired
     MissionRepository missionRepository;
+
+    @Autowired
+    StaffRepository staffRepository;
 
     @Autowired
     StaffService staffService;
@@ -58,20 +58,42 @@ public class QueueController {
 
     @GetMapping("/queue/index")
     public String findAllQueue(Model model) {
-        return findAllQueuePage(1, model);
+        return findAllQueuePage(1,null,null,null,null,null,null,null,null, model);
     }
 
     @GetMapping("/queue/index/{page}")
-    public String findAllQueuePage(@PathVariable int page, Model model) {
-        Page<Queue> queuePageNo = queueService.findAllQueuePage(page, 15);
-        System.out.println(queuePageNo.toList());
-        model.addAttribute("queues", queuePageNo.toList());
+    public String findAllQueuePage(@PathVariable int page,@RequestParam(value = "id",required = false)Long id,@RequestParam(value = "queueName",required = false)String queueName,
+                                   @RequestParam(value = "hostName",required = false)String hostName,@RequestParam(value = "displayName",required = false)String displayName,@RequestParam(value = "department",required = false)String department,
+                                   @RequestParam(value = "queueType",required = false)String queueType,@RequestParam(value = "mission",required = false)String mission,@RequestParam(value = "province",required = false)String province,
+                                   Model model) {
+        QueueSearchCriteria queueSearchCriteria = new QueueSearchCriteria(id,queueName,hostName,displayName,department,queueType,mission,province);
+        Page<Queue> queues = queueService.findQueuesByCriteria(queueSearchCriteria,page,15);
+        System.out.println(queues.toList());
+        model.addAttribute("queues", queues.toList());
+        model.addAttribute("departments",departmentRepository.findAll());
+        model.addAttribute("missions", missionRepository.findAll());
+        model.addAttribute("typeQueues",queueRRepository.findAllTypeQueue());
+        model.addAttribute("provinces",queueRRepository.findAllProvince());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", queuePageNo.getTotalPages());
-        model.addAttribute("totalItems", queuePageNo.getTotalElements());
+        model.addAttribute("totalPages", queues.getTotalPages());
+        model.addAttribute("totalItems", queues.getTotalElements());
         model.addAttribute("listMenu", menuService.getListMenuNoParent());
         model.addAttribute("mapMenu", menuService.getMapMenuParent());
+        model.addAttribute("id",id);
+        model.addAttribute("queueName",queueName);
+        model.addAttribute("hostName",hostName);
+        model.addAttribute("displayName",displayName);
+        model.addAttribute("department",department);
+        model.addAttribute("queueType",queueType);
+        model.addAttribute("mission",mission);
+        model.addAttribute("province",province);
         return "queue";
+    }
+    @GetMapping("/queue/search")
+    public String searchQueue(@RequestParam(value = "id",required = false)Long id, @RequestParam(value = "queueName",required = false)String queueName,
+                               @RequestParam(value = "hostName",required = false)String hostName,@RequestParam(value = "displayName",required = false)String displayName,@RequestParam(value = "department",required = false)String department,
+                               @RequestParam(value = "queueType",required = false)String queueType,@RequestParam(value = "mission",required = false)String mission,@RequestParam(value = "province",required = false)String province,Model model){
+        return findAllQueuePage(1,id,queueName,hostName,displayName,department,queueType,mission,province,model);
     }
 
     @GetMapping("/queue/update/{id}")
@@ -205,15 +227,28 @@ public class QueueController {
         redirectAttributes.addFlashAttribute("error", "Delete Queue Error");
         return "redirect:/queue/index";
     }
+    @GetMapping({"/queue/view/{id}","/queue/view/{id}/{page}"})
+    public String viewMenu(@PathVariable("id")Long id,@PathVariable(value = "page",required = false)Optional<Integer> page,Model model, RedirectAttributes redirectAttributes){
+        System.err.println("page"+ page);
+        int page2 = 1;
+        if (page.isPresent()) page2 = Math.max(page.get(),page2);
+        Optional<Queue> queue = queueService.findQueueById(id);
+        if (queue.isPresent()){
+            Page<Staff> staffs = staffService.findStaffPageByIdQueue(id,page2,20);
+            model.addAttribute("staffs",staffs);
+            model.addAttribute("queue",queue.get());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", staffs.getTotalPages());
+            model.addAttribute("totalItems", staffs.getTotalElements());
+            model.addAttribute("listMenu", menuService.getListMenuNoParent());
+            model.addAttribute("mapMenu", menuService.getMapMenuParent());
+            return "queue-view";
+        }
+        else {
+            redirectAttributes.addFlashAttribute("error","Queue not found");
+            return "redirect:/queue/index";
+        }
 
-//    @PostMapping("/import")
-//    public InputStreamResource importFileExcel(MultipartFile multipartFile) throws IOException {
-//        Map<String, Boolean> map = new LinkedHashMap<>();
-//        XSSFWorkbook w = (XSSFWorkbook) ExcelWriteFile.write(map);
-//        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-//        w.write(bout);
-//        InputStream inputStream = new ByteArrayInputStream(bout.toByteArray());
-//        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-//        return inputStreamResource;
-//    }
+    }
+
 }

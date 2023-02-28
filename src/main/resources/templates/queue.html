@@ -35,6 +35,64 @@
                         <div class="router_title">
                             Menu
                         </div>
+                        <form class="search-form1" th:action ="@{/queue/search}" method="get">
+                            <div class="form-group">
+                                <label for="id">ID:</label>
+                                <input type="text" th:value = "${id!=null?id:''}" id="id" name="id">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="queue-name">Queue Name:</label>
+                                <input type="text" id="queue-name" th:value = "${queueName!=null?queueName:''}" name="queueName">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="host-name">Host Name:</label>
+                                <input type="text" id="host-name" th:value = "${hostName != null?hostName:''}" name="hostName">
+                            </div>
+                            <div class="form-group">
+                                <label for="display-name">Display Name:</label>
+                                <input type="text" id="display-name" th:value = "${displayName!= null? displayName:''}" name="displayName">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="department">Department:</label>
+                                <select id="department" name="department">
+                                    <option value="">--Select--</option>
+                                    <option th:each = "item:${departments}" th:value="${item.id}" th:text = "${item.departmentName}" th:selected = "${department}?${department}==${item.id}:'false'">Department 1</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="queue-type">Type Queue:</label>
+                                <select id="queue-type" name="queueType">
+                                    <option value="">--Select--</option>
+                                    <option th:each = "item:${typeQueues}" th:value="${item}" th:text = "${item}" th:selected = "${queueType}?${queueType}==${item}:'false'">Department 1</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mission">Mission:</label>
+                                <select id="mission" name="mission">
+                                    <option value="">--Select--</option>
+                                    <option th:each = "item:${missions}" th:value="${item.id}" th:text = "${item.name}" th:selected = "${mission}?${mission}==${item.id}:'false'">Department 1</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="province">Province:</label>
+                                <select id="province" name="province">
+                                    <option value="">--Select--</option>
+                                    <option th:each = "item:${provinces}" th:value="${item}" th:text = "${item}" th:selected = "${province}?${province}==${item}:'false'">Department 1</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" >Search</button>
+                            </div>
+
+                        </form>
+
                         <div class="add-role">
                             <button onclick="location.href='/queue/create';">ADD</button>
                         </div>
@@ -84,7 +142,7 @@
                                     <td th:text="${queue.status ? 'Active' : 'Not Active'}">A description of John</td>
 
                                     <td>
-                                        <a th:href="@{'/queue/addstaff/'+${queue.id}}">
+                                        <a th:href="@{'/queue/view/'+${queue.id}}">
                                                 <span class="material-symbols-outlined">
                                                 person
                                                 </span>

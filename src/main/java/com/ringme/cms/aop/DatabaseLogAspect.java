@@ -28,7 +28,8 @@ public class DatabaseLogAspect {
 
     @Around("execution(* com.ringme.cms.repository.*.*(..))&& !execution(* com.ringme.cms.repository.UserRepository.findUserByUserName(..))" +
             "&& !execution(* com.ringme.cms.repository.UserRoleRepository.findUserRoleByUserId(..))" +
-            "&& !execution(* com.ringme.cms.repository.RouterRoleRepository.findAllRouterRoleByListRoleId(..))")
+            "&& !execution(* com.ringme.cms.repository.RouterRoleRepository.findAllRouterRoleByListRoleId(..))" +
+            "&& !execution(* com.ringme.cms.repository.QueueRepository.findAll(..))")
     public Object logDatabase(ProceedingJoinPoint joinPoint) throws Throwable {
         // get object ID if available
         Object[] args = joinPoint.getArgs();

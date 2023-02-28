@@ -1,5 +1,6 @@
 package com.ringme.cms.service;
 
+import com.ringme.cms.criteria.QueueSearchCriteria;
 import com.ringme.cms.model.Department;
 import com.ringme.cms.model.Mission;
 import com.ringme.cms.model.Queue;
@@ -20,7 +21,6 @@ public interface QueueService {
 
     Page<Queue> findAllQueuePage(int pageNo,int pageSize);
 
-    Page<Queue> searchQueueByDepartmentTypeMissionProvince(int pageNo, int pageSize, Long departmentId, String type, Long missionId,String province);
-
+    Page<Queue> findQueuesByCriteria(QueueSearchCriteria criteria, int pageNo, int pageSize);
     List<Queue> findAllNextQueueById(Long id);
 }

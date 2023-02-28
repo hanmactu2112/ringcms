@@ -25,6 +25,8 @@ public class Queue extends EntityBase implements Serializable {
     private Long id;
     @Column(name = "queue_name")
     private String queueName;
+    @Column(name = "host_name")
+    private String hostName;
     @Column(name = "display_name")
     private String displayName;
     private Integer minutes;

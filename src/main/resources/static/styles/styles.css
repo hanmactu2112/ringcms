@@ -889,6 +889,63 @@ li{
     display: none;
   }
 
+  /* search form queue */
+  .search-form1 {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-form1 .form-group {
+    margin-bottom: 10px;
+    margin-left:20px;
+  }
+
+  .search-form1 .form-group label {
+    display: inline-block;
+    width: 100px;
+  }
+
+  .search-form1 .form-group input[type="text"],
+  .search-form1 .form-group select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 220px;
+  }
+
+  .search-form1 .form-group select {
+    width: 220px;
+  }
+    .search-form1 button {
+        padding: 3px 8px;
+      }
+
+  .button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #009688;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .button:last-child {
+    margin-right: 0;
+  }
+    .button-addstaff{
+        margin-bottom: 20px;
+    }
+
+
 
 
 

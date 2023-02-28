@@ -54,6 +54,7 @@ public class MenuController {
         Menu menu = new Menu();
         model.addAttribute("menu", menu);
         List<Router> routers = routerService.findAllRouterActive();
+        routers.removeIf(router -> router.getRouter_link().contains("*"));
         List<Icon> icons = iconRepository.findAll();
         model.addAttribute("listMenu",menuService.getListMenuNoParent());
         model.addAttribute("mapMenu",menuService.getMapMenuParent());
@@ -67,6 +68,7 @@ public class MenuController {
         Optional<Menu> menu = menuService.findMenuById(id);
         if (menu.isPresent()) {
             List<Router> routers = routerService.findAllRouterActive();
+            routers.removeIf(router -> router.getRouter_link().contains("*"));
             List<Icon> icons = iconRepository.findAll();
             model.addAttribute("listMenu",menuService.getListMenuNoParent());
             model.addAttribute("mapMenu",menuService.getMapMenuParent());
