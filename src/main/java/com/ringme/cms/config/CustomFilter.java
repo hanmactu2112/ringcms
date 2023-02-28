@@ -25,9 +25,10 @@ public class CustomFilter extends OncePerRequestFilter {
         System.err.println(SecurityContextHolder.getContext().getAuthentication());
         if(SecurityContextHolder.getContext().getAuthentication() !=null){
             if (!request.getRequestURI().matches("/login")&&!request.getRequestURI().equals("/")
-                    &&!request.getRequestURI().equals("/index")
+                    &&!request.getRequestURI().equals("/index")&&!request.getRequestURI().matches("/images")
                     &&!request.getRequestURI().equals("/logout")
                     &&!request.getRequestURI().equals("/captcha.jpg")
+                    &&!request.getRequestURI().matches("/error")
                     && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserSecurity){
                 System.err.println("Custom filter have user: "+request.getRequestURI());
                 UserSecurity userDetails = (UserSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -63,4 +64,10 @@ public class CustomFilter extends OncePerRequestFilter {
             return;
         }
     }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getServletPath();
+        return path.endsWith(".js") || path.endsWith(".css") || path.endsWith(".png")||path.startsWith("/images");
+    }
+
 }

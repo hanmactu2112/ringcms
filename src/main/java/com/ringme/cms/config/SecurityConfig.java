@@ -81,7 +81,7 @@ public class SecurityConfig  {
     }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/images/**","/styles/**","/static/**","/captcha.jpg");
+        return (web) -> web.ignoring().antMatchers("/images/**","/styles/**","/static/**","/captcha.jpg","/resources/**");
     }
     @Bean
     public FilterRegistrationBean<CustomFilter> customFilterRegistration() {

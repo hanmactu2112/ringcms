@@ -14,6 +14,12 @@
             rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-3IMwAE5uxPFX28+5RtJ5n5QV22Jmzxjcvg9V8Wj0SN+2wGyqmzyfcBnpLe8WJ3Iq3pSgTLJNfL+8WzpljYvH4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Thư viện jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Thư viện Cropper.js -->
+    <link href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
 
 
     <!-- Google Web Fonts -->
@@ -37,7 +43,7 @@
                         <div class="title-create-role">
                             Create menu
                         </div>
-                        <form th:action = "@{/queue/save}" class="create-role" method="post" th:object = "${queue}">
+                        <form th:action = "@{/queue/save}" class="create-role" method="post" th:object = "${queue}" enctype="multipart/form-data">
 
                             <div style="text-align: center; font-size: 20px; color: rgb(255, 0, 0); font-weight: bold">
                                 <span th:utext="${error}"></span>
@@ -52,7 +58,7 @@
                             <input type="text" id="minutes" th:field =*{minutes} name="minutes" >
 
                             <label for="select">Mission:</label>
-                            <select class="form__select"  name="mission" id="select">
+                            <select class="form__select"  name="mission" >
                                 <option th:each = "item,istat : ${missions}" th:selected = "${queue.id}?${queue.mission.id}==${item.id}:'false'" th:value="${item.id}" th:text = "${item.name}">Supervision</option>
                             </select>
 
@@ -66,7 +72,7 @@
                             </select>
 
                             <label for="select">Department:</label>
-                            <select class="form__select"  name="department" id="select">
+                            <select class="form__select"  name="department" >
                                 <option th:each = "item,istat : ${departments}" th:selected = "${queue.id}?${queue.department.id}==${item.id}:'false'" th:value="${item.id}" th:text = "${item.departmentName}">Supervision</option>
                             </select>
 
@@ -74,14 +80,25 @@
                             <input type="text" id="description" th:field =*{description} name="description" >
 
                             <label for="select">Start Time:</label>
-                            <select class="form__select"  name="startTime" id="select">
+                            <select class="form__select"  name="startTime" >
                                 <option th:each = "item,istat : ${timeQueues}" th:selected = "${queue.id}?${queue.startTime.id}==${item.id}:'false'" th:value="${item.id}" th:text = "${item.time}">Supervision</option>
                             </select>
 
                             <label for="select">End Time:</label>
-                            <select class="form__select"  name="endTime" id="select">
+                            <select class="form__select"  name="endTime" >
                                 <option th:each = "item,istat : ${timeQueues}" th:selected = "${queue.id}?${queue.endTime.id}==${item.id}:'false'" th:value="${item.id}" th:text = "${item.time}">Supervision</option>
                             </select>
+                            <div class="image-preview">
+                                <img id="preview" src="https://via.placeholder.com/150" th:if="${queue.image != null}" th:src="'/images/'+${queue.image}">
+                            </div>
+
+                            <div class="image-upload">
+                                <label for="image-input">Chọn ảnh</label>
+                                <input name="fileimg" type="file" id="image-input">
+                            </div>
+
+                            <button id="save-button">Lưu</button>
+                            <button id="cancel-button">Hủy</button>
 
                             <button type="submit">Save Queue</button>
                         </form>
@@ -92,7 +109,62 @@
     </div>
 </div>
 <script>
+    $(function() {
+  var cropper = null;
 
+  $('#image-input').on('change', function() {
+    var input = $(this)[0];
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        $('#preview').attr('src', e.target.result);
+
+        cropper = new Cropper('#preview', {
+          aspectRatio: 1,
+          viewMode: 1,
+        });
+
+        $('#image-upload').hide();
+        $('#save-button, #cancel-button').show();
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  });
+
+  $('#save-button').on('click', function() {
+    var canvas = cropper.getCroppedCanvas();
+    var imageData = canvas.toDataURL();
+    $('#preview').attr('src', imageData);
+
+    $('#image-input').val('');
+    $('#image-upload').show();
+    $('#save-button, #cancel-button').hide();
+  });
+  $('#cancel-button').on('click', function() {
+    cropper.destroy();
+    $('#preview').attr('src', '');
+    $('#image-input').val('');
+    $('#image-upload').show();
+    $('#save-button, #cancel-button').hide();
+  });
+});
+function myFunction() {
+            console.log(document.getElementById("sideBar").style.width);
+            if (document.getElementById("sideBar").style.width === "0px") {
+                document.getElementById("sideBar").style.width = "10%";
+                document.getElementById("logo").style.width = "10%";
+                document.getElementById("bgbody").style.width = "90%";
+                document.getElementById("navbar_main").style.width = "90%";
+
+            }
+            else {
+                document.getElementById("sideBar").style.width = 0;
+                document.getElementById("logo").style.width = 0;
+                document.getElementById("bgbody").style.width = "100%";
+                document.getElementById("navbar_main").style.width = "100%";
+            }
+
+        }
 </script>
 </body>
 

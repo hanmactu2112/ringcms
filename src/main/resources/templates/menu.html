@@ -23,22 +23,24 @@
                 <div class="dropdow">
                     <div class="dropdow_select">
                         <a th:href="@{/index}">
+                             <span class="dropdow_selected">
+                                    Home
+                                </span>
                                 <span class="material-symbols-outlined">
                                     home
                                     </span>
-                            <span class="dropdow_selected">
-                                    Home
-                                </span>
+
                         </a>
                     </div>
                 </div>
                 <div class="dropdow" th:each ="menu,item:${listMenu}">
                     <div class="dropdow_select active">
                         <a th:href="${menu.router.router_link}">
-                            <th:block th:utext="${menu.icon.name}"/>
                             <span class="dropdow_selected" th:text = "${menu.name}">
                                     Homepage
                                 </span>
+                            <th:block th:utext="${menu.icon.name}"/>
+
                         </a>
 
                     </div>
@@ -48,21 +50,23 @@
                 <div class="dropdow" th:each="entry : ${mapMenu}">
                     <div class="dropdow_select">
                         <a >
-                                <span class="material-symbols-outlined">
-                                    add
-                                </span>
                             <span class="dropdow_selected" th:text ="${entry.key}">
                                     System management
                                 </span>
+                                <span class="material-symbols-outlined">
+                                    add
+                                </span>
+
                         </a>
                     </div>
                     <ul class="dropdow_list" >
                         <li class="dropdow_item" th:each ="item : ${entry.value}">
                             <a th:href="${item.router.router_link}">
-                                <th:block th:utext="${item.icon.name}"/>
                                 <span class="dropdow_selected" th:text = "${item.name}">
                                     Homepage
                                 </span>
+                                <th:block th:utext="${item.icon.name}"/>
+
                             </a>
                         </li>
                     </ul>
